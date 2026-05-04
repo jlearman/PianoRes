@@ -154,8 +154,6 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
   auto inputGainValue = apvts.getRawParameterValue("InputGain");
   auto outputGainValue = apvts.getRawParameterValue("OutputGain");
   auto dryWetMixValue = apvts.getRawParameterValue("DryWetMix");
-  auto preDelayTimeValue = apvts.getRawParameterValue("PreDelayTime");
-  auto stereoWidthValue = apvts.getRawParameterValue("StereoWidth");
   auto isBypassed = apvts.getRawParameterValue("Bypassed");
   updateFilterParameters();
 
