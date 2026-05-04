@@ -1,0 +1,13 @@
+﻿# JUCE specific
+**/Builds
+**/JuceLibraryCode
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vs/
+.vscode/
+*.user
+*.suo
