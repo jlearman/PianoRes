@@ -33,6 +33,19 @@ damper resonance samples and you can't easily disable them, you can still
 use PianoRes. [Note: editing the sfz file you can remove the resonance
 sample groups.]
 
+### Usage in Reaper
+
+1. Add a track and plug in your sample player configured with your sampleset (e.g.,
+    Sforzando with SalamanderGrand.)
+2. Add another track and plug in PianoRes.  Load the impulse file. (Any piano resonance
+   impulse file will do, but ideally one created with your piano sampleset.)
+3. Set PianoRes wet/dry to 100%
+4. Click the piano track's "ROUTE" button and click "Add new send", and choose
+   the PianoRes Track
+5. Control the amount of resonance using the PianoRes track's volume slider
+6. To hear the effect only, click the piano track's ROUTE button and uncheck
+   "Master Send"
+
 ## Controls
 
 The plugin has a file chooser to select the impulse response (IR) file,
