@@ -8,7 +8,7 @@
               displaySplashScreen="1" splashScreenColour="Light" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
               pluginName="PianoRes" pluginDesc="Piano Resonance for sampled pianos"
               pluginManufacturer="jlearman" companyCopyright="CC0" companyEmail="jjlearman@gmail.com"
-              version="0.0.1" lv2Uri="urn:jlearman:PianoRes">
+              version="0.0.2" lv2Uri="urn:jlearman:PianoRes">
   <MAINGROUP id="e9u98w" name="PianoRes">
     <GROUP id="{5FC00DE4-C31C-C498-1696-863668371BCC}" name="Source">
       <FILE id="ALO6Je" name="Spartan-Medium.ttf" compile="0" resource="1"
@@ -22,6 +22,10 @@
       <FILE id="JLy6Za" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="XOLn4P" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="f88Fku" name="cp4-cfx-impulse-16.flac" compile="0" resource="1"
+            file="Resources/cp4-cfx-impulse-16.flac"/>
+      <FILE id="J1MN4m" name="cp4-cfx-impulse-short.flac" compile="0" resource="1"
+            file="Resources/cp4-cfx-impulse-short.flac"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
