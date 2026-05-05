@@ -82,7 +82,7 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
   g.fillAll(juce::Colour::fromRGB(252, 248, 237));
   g.setFont(32.0f);
   g.setColour(juce::Colour::fromRGB(111, 76, 91));
-  g.drawFittedText("PianoRes", getWidth() - 80 - 15, 15, 80, 20,
+  g.drawFittedText("PianoRes", getWidth() - 80 - 15 - 30, 15, 100, 20, // FIXME
                    juce::Justification::centred, 1);
 
   g.setColour(juce::Colour::fromRGB(158, 119, 119));
@@ -110,7 +110,7 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
     }
     for (int xPos = 0; xPos < waveformValues.size(); ++xPos) {
       auto yPos = juce::jmap<float>(waveformValues[xPos], -72.0f, 0.0f,
-                                    waveformHeight + 60, 60);
+                                    waveformHeight + 60, 75);  // FIXME: where do these numbers come from?
       waveformPath.lineTo(15 + xPos / waveformResolution * waveformWidth, yPos);
     }
 
