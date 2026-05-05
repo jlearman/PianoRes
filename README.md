@@ -74,9 +74,9 @@ I haven't tested this, but this should work on Windows.  Small changes would be
 needed for Linux/Mac.
 
 1. Requirements:
-1.1. JUCE (install at C:\JUCE on Windows, for easiest)
-1.2. Visual Studio 2026 (Community edition fine.  I haven't tried VSCode.)
-1.3. this repo
+   1. JUCE (install at C:\JUCE on Windows, for easiest)
+   2. Visual Studio 2026 (Community edition fine.  I haven't tried VSCode.)
+   3. this repo
 2. Run JUCE "ProJucer" and load the "PianoRes.jucer" project
 3. Click the VS button to the right of "Selected exporter: Visual Studio 2026".  That opend VS with the project
 4. Build->Build Solution
