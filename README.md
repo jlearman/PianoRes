@@ -33,6 +33,19 @@ damper resonance samples and you can't easily disable them, you can still
 use PianoRes. [Note: editing the sfz file you can remove the resonance
 sample groups.]
 
+### Usage in Reaper
+
+1. Add a track and plug in your sample player configured with your sampleset (e.g.,
+    Sforzando with SalamanderGrand.)
+2. Add another track and plug in PianoRes.  Load the impulse file. (Any piano resonance
+   impulse file will do, but ideally one created with your piano sampleset.)
+3. Set PianoRes wet/dry to 100%
+4. Click the piano track's "ROUTE" button and click "Add new send", and choose
+   the PianoRes Track
+5. Control the amount of resonance using the PianoRes track's volume slider
+6. To hear the effect only, click the piano track's ROUTE button and uncheck
+   "Master Send"
+
 ## Controls
 
 The plugin has a file chooser to select the impulse response (IR) file,
@@ -61,11 +74,11 @@ I haven't tested this, but this should work on Windows.  Small changes would be
 needed for Linux/Mac.
 
 1. Requirements:
-1.1. JUCE (install at C:\JUCE on Windows, for easiest)
-1.2. Visual Studio 2026 (Community edition fine.  I haven't tried VSCode.)
-1.3. this repo
+   1. JUCE (install at C:\JUCE on Windows, for easiest)
+   2. Visual Studio 2026 (Community edition fine.  I haven't tried VSCode.)
+   3. this repo
 2. Run JUCE "ProJucer" and load the "PianoRes.jucer" project
-3. Click the VS button to the right of "Selected exporter: Visual Studio 2026".  That opend VS with the project
+3. Click the VS button to the right of "Selected exporter: Visual Studio 2026".  That opens VS with the project
 4. Build->Build Solution
 5. Hunt down the plugin you want (currently LV2 or VST3) and install it in your system.  On a Mac you might be able to build AU, though you might need to change Jucer options.
 
