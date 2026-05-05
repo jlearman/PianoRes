@@ -78,7 +78,7 @@ needed for Linux/Mac.
    2. Visual Studio 2026 (Community edition fine.  I haven't tried VSCode.)
    3. this repo
 2. Run JUCE "ProJucer" and load the "PianoRes.jucer" project
-3. Click the VS button to the right of "Selected exporter: Visual Studio 2026".  That opend VS with the project
+3. Click the VS button to the right of "Selected exporter: Visual Studio 2026".  That opens VS with the project
 4. Build->Build Solution
 5. Hunt down the plugin you want (currently LV2 or VST3) and install it in your system.  On a Mac you might be able to build AU, though you might need to change Jucer options.
 
