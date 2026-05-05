@@ -9,8 +9,6 @@ increase realism.
 Built using the JUCE framework, PianoRes is compatible with various plugin
 formats, including LV2, VST, VST3, and AU.
 
-Currently under development.  Don't bother trying it yet!
-
 ## Usage
 
 Plug PianoRes to process the audio output your piano sample player
@@ -51,9 +49,11 @@ Several IR files will be included with the plugin, but you can also create your
 own by recording all notes a piano and summing them together in a DAW, and
 normalizint it.
 
-The plugin also has a release time control, which adjusts how quickly the
-damper resonance fades out as the sustain pedal is released.  Half-pedaling
-will hopefully be supported in the future.
+[NYI] The plugin also has a release time control, which adjusts how quickly the
+damper resonance fades out as the sustain pedal is released. (Currently hard-
+coded.)
+
+[NYI] Half-pedaling
 
 ## License
 

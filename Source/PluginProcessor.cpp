@@ -102,6 +102,13 @@ void PianoResAudioProcessor::prepareToPlay(double sampleRate,
   lowShelfFilter.reset();
   highShelfFilter.prepare(spec);
   highShelfFilter.reset();
+
+  adsr.setSampleRate(sampleRate);
+  adsrParams.attack = 0.1f; // Seconds -- make a parameter?
+  adsrParams.decay = 0.0f;
+  adsrParams.sustain = 1.0f;
+  adsrParams.release = 0.5f; // Release time // TODO: make this a parameter
+  adsr.setParameters(adsrParams);
 }
 
 void PianoResAudioProcessor::releaseResources() {
@@ -136,7 +143,7 @@ bool PianoResAudioProcessor::isBusesLayoutSupported(
 #endif
 
 void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
-                                        juce::MidiBuffer &/*midiMessages*/) {
+                                        juce::MidiBuffer &midiMessages) {
   juce::ScopedNoDenormals noDenormals;
   auto totalNumInputChannels = getTotalNumInputChannels();
   auto totalNumOutputChannels = getTotalNumOutputChannels();
@@ -170,9 +177,28 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
   inputGainer.process(context);
   dryWetMixer.pushDrySamples(block);
   convolver.process(context);
-
   lowShelfFilter.process(context);
   highShelfFilter.process(context);
+
+  // detect sustain pedal on/off messages and apply ADSR envelope
+  for (const auto metadata : midiMessages)  // juce::MidiBufferMetadata
+  {
+      // Get the actual MIDI message object
+      auto message = metadata.getMessage();
+
+      // Get its position relative to the start of this block (0 to buffer.getNumSamples() - 1)
+	  // int samplePos = metadata.samplePosition; // no point: always zero since we're processing the whole block
+	  // TODO: sample-accurate pedaling.  It's fine without it for live playing, but when
+      // using MIDI in a DAW, sustain on/off messages can get stacked up due to sloppy editing.
+
+      if (message.isSustainPedalOn()) {
+          adsr.noteOn();
+          convolver.reset();
+      } else if (message.isSustainPedalOff()) {
+          adsr.noteOff();
+      }
+  }
+  adsr.applyEnvelopeToBuffer(buffer, 0, buffer.getNumSamples());
 
   dryWetMixer.mixWetSamples(block);
   outputGainer.process(context);

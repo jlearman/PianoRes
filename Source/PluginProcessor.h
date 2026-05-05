@@ -72,7 +72,9 @@ private:
   juce::AudioBuffer<float> originalIRBuffer;
   juce::AudioBuffer<float> modifiedIRBuffer;
 
-  // soundtouch::SoundTouch soundtouch;
+  // Use an ADSR to control sustain release
+  juce::ADSR adsr;
+  juce::ADSR::Parameters adsrParams;
 
   APVTS::ParameterLayout createParameters();
 
