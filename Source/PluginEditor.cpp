@@ -179,7 +179,7 @@ void PianoResAudioProcessorEditor::openButtonClicked() {
       irFileLabel.setText(file.getFileName(), juce::dontSendNotification);
       irFileLabel.repaint();
 
-      auto *reader = formatManager.createReaderFor(file);
+      std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
       if (reader != nullptr) {
         audioProcessor.setIRBufferSize(
             static_cast<int>(reader->numChannels),
