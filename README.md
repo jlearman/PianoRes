@@ -62,9 +62,8 @@ Several IR files will be included with the plugin, but you can also create your
 own by recording all notes a piano and summing them together in a DAW, and
 normalizint it.
 
-[NYI] The plugin also has a release time control, which adjusts how quickly the
-damper resonance fades out as the sustain pedal is released. (Currently hard-
-coded.)
+The plugin also has a release time control, which adjusts how quickly the
+damper resonance fades out as the sustain pedal is released.
 
 [NYI] Half-pedaling
 
