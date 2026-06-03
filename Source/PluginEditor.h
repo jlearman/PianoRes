@@ -53,6 +53,9 @@ private:
   juce::Slider dryWetMixSlider;
   juce::Label dryWetMixLabel;
   std::unique_ptr<APVTS::SliderAttachment> dryWetMixSliderAttachment;
+  juce::Slider releaseTimeSlider;
+  juce::Label releaseTimeLabel;
+  std::unique_ptr<APVTS::SliderAttachment> releaseTimeSliderAttachment;
   juce::Slider lowShelfFreqSlider;
   juce::Label lowShelfFreqLabel;
   std::unique_ptr<APVTS::SliderAttachment> lowShelfFreqSliderAttachment;

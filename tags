@@ -1,0 +1,106 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/mnt/c/Users/jeffl/OneDrive/Documents/GitHub/juce/PianoRes/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+APVTS	Source/PluginEditor.h	/^  using APVTS = juce::AudioProcessorValueTreeState;$/;"	t	class:PianoResAudioProcessorEditor	typeref:typename:juce::AudioProcessorValueTreeState
+APVTS	Source/PluginProcessor.h	/^  using APVTS = juce::AudioProcessorValueTreeState;$/;"	t	class:PianoResAudioProcessor	typeref:typename:juce::AudioProcessorValueTreeState
+CustomStyle	Source/CustomStyle.cpp	/^CustomStyle::CustomStyle() {$/;"	f	class:juce::CustomStyle
+CustomStyle	Source/CustomStyle.h	/^class CustomStyle : public juce::LookAndFeel_V4 {$/;"	c	namespace:juce
+PianoResAudioProcessor	Source/PluginProcessor.cpp	/^PianoResAudioProcessor::PianoResAudioProcessor()$/;"	f	class:PianoResAudioProcessor
+PianoResAudioProcessor	Source/PluginProcessor.h	/^class PianoResAudioProcessor : public juce::AudioProcessor {$/;"	c
+PianoResAudioProcessorEditor	Source/PluginEditor.cpp	/^PianoResAudioProcessorEditor::PianoResAudioProcessorEditor(PianoResAudioProcessor &p)$/;"	f	class:PianoResAudioProcessorEditor
+PianoResAudioProcessorEditor	Source/PluginEditor.h	/^class PianoResAudioProcessorEditor : public juce::AudioProcessorEditor {$/;"	c
+__anon93e54aec0102	Source/PluginEditor.cpp	/^  openIRFileButton.onClick = [this] { openButtonClicked(); };$/;"	f	function:PianoResAudioProcessorEditor::PianoResAudioProcessorEditor	file:
+__anon93e54aec0202	Source/PluginEditor.cpp	/^  fileChooser->launchAsync(chooserFlags, [this](const juce::FileChooser &fc) {$/;"	f	function:PianoResAudioProcessorEditor::openButtonClicked	file:
+acceptsMidi	Source/PluginProcessor.cpp	/^bool PianoResAudioProcessor::acceptsMidi() const {$/;"	f	class:PianoResAudioProcessor	typeref:typename:bool
+adsr	Source/PluginProcessor.h	/^  juce::ADSR adsr;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::ADSR
+adsrParams	Source/PluginProcessor.h	/^  juce::ADSR::Parameters adsrParams;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::ADSR::Parameters
+apvts	Source/PluginProcessor.h	/^  APVTS apvts;$/;"	m	class:PianoResAudioProcessor	typeref:typename:APVTS
+audioProcessor	Source/PluginEditor.h	/^  PianoResAudioProcessor &audioProcessor;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:PianoResAudioProcessor &
+bypassButton	Source/PluginEditor.h	/^  juce::ToggleButton bypassButton;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::ToggleButton
+bypassButtonAttachment	Source/PluginEditor.h	/^  std::unique_ptr<APVTS::ButtonAttachment> bypassButtonAttachment;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<APVTS::ButtonAttachment>
+changeProgramName	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::changeProgramName(int \/*index*\/,$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+convolver	Source/PluginProcessor.h	/^  juce::dsp::Convolution convolver;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::dsp::Convolution
+createEditor	Source/PluginProcessor.cpp	/^juce::AudioProcessorEditor *PianoResAudioProcessor::createEditor() {$/;"	f	class:PianoResAudioProcessor	typeref:typename:juce::AudioProcessorEditor *
+createLabel	Source/PluginEditor.cpp	/^void PianoResAudioProcessorEditor::createLabel(juce::Label &label,$/;"	f	class:PianoResAudioProcessorEditor	typeref:typename:void
+createParameters	Source/PluginProcessor.cpp	/^PianoResAudioProcessor::createParameters() {$/;"	f	class:PianoResAudioProcessor	typeref:typename:juce::AudioProcessorValueTreeState::ParameterLayout
+createPluginFilter	Source/PluginProcessor.cpp	/^juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {$/;"	f	typeref:typename:juce::AudioProcessor * JUCE_CALLTYPE
+createSlider	Source/PluginEditor.cpp	/^void PianoResAudioProcessorEditor::createSlider(juce::Slider &slider,$/;"	f	class:PianoResAudioProcessorEditor	typeref:typename:void
+customStyle	Source/PluginEditor.h	/^  juce::CustomStyle customStyle;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::CustomStyle
+drawButtonBackground	Source/CustomStyle.cpp	/^void CustomStyle::drawButtonBackground(Graphics &g, Button &button,$/;"	f	class:juce::CustomStyle	typeref:typename:void
+drawRotarySlider	Source/CustomStyle.cpp	/^void CustomStyle::drawRotarySlider(Graphics &g, int x, int y, int width,$/;"	f	class:juce::CustomStyle	typeref:typename:void
+dryWetMixLabel	Source/PluginEditor.h	/^  juce::Label dryWetMixLabel;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Label
+dryWetMixSlider	Source/PluginEditor.h	/^  juce::Slider dryWetMixSlider;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Slider
+dryWetMixSliderAttachment	Source/PluginEditor.h	/^  std::unique_ptr<APVTS::SliderAttachment> dryWetMixSliderAttachment;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<APVTS::SliderAttachment>
+dryWetMixer	Source/PluginProcessor.h	/^  juce::dsp::DryWetMixer<float> dryWetMixer;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::dsp::DryWetMixer<float>
+enableIRParameters	Source/PluginEditor.h	/^  bool enableIRParameters = false;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:bool
+fileChooser	Source/PluginEditor.h	/^  std::unique_ptr<juce::FileChooser> fileChooser;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<juce::FileChooser>
+formatManager	Source/PluginEditor.h	/^  juce::AudioFormatManager formatManager;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::AudioFormatManager
+getCurrentProgram	Source/PluginProcessor.cpp	/^int PianoResAudioProcessor::getCurrentProgram() { return 0; }$/;"	f	class:PianoResAudioProcessor	typeref:typename:int
+getModifiedIR	Source/PluginProcessor.cpp	/^juce::AudioBuffer<float> &PianoResAudioProcessor::getModifiedIR() {$/;"	f	class:PianoResAudioProcessor	typeref:typename:juce::AudioBuffer<float> &
+getName	Source/PluginProcessor.cpp	/^const juce::String PianoResAudioProcessor::getName() const {$/;"	f	class:PianoResAudioProcessor	typeref:typename:const juce::String
+getNumPrograms	Source/PluginProcessor.cpp	/^int PianoResAudioProcessor::getNumPrograms() {$/;"	f	class:PianoResAudioProcessor	typeref:typename:int
+getOriginalIR	Source/PluginProcessor.cpp	/^juce::AudioBuffer<float> &PianoResAudioProcessor::getOriginalIR() {$/;"	f	class:PianoResAudioProcessor	typeref:typename:juce::AudioBuffer<float> &
+getProgramName	Source/PluginProcessor.cpp	/^const juce::String PianoResAudioProcessor::getProgramName(int \/*oindex*\/) {$/;"	f	class:PianoResAudioProcessor	typeref:typename:const juce::String
+getStateInformation	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::getStateInformation(juce::MemoryBlock &\/*destData*\/) {$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+getTailLengthSeconds	Source/PluginProcessor.cpp	/^double PianoResAudioProcessor::getTailLengthSeconds() const { return 0.0; }$/;"	f	class:PianoResAudioProcessor	typeref:typename:double
+hasEditor	Source/PluginProcessor.cpp	/^bool PianoResAudioProcessor::hasEditor() const {$/;"	f	class:PianoResAudioProcessor	typeref:typename:bool
+highShelfFilter	Source/PluginProcessor.h	/^      highShelfFilter;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,juce::dsp::IIR::Coefficients<float>>
+highShelfFreqLabel	Source/PluginEditor.h	/^  juce::Label highShelfFreqLabel;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Label
+highShelfFreqSlider	Source/PluginEditor.h	/^  juce::Slider highShelfFreqSlider;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Slider
+highShelfFreqSliderAttachment	Source/PluginEditor.h	/^  std::unique_ptr<APVTS::SliderAttachment> highShelfFreqSliderAttachment;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<APVTS::SliderAttachment>
+highShelfGainLabel	Source/PluginEditor.h	/^  juce::Label highShelfGainLabel;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Label
+highShelfGainSlider	Source/PluginEditor.h	/^  juce::Slider highShelfGainSlider;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Slider
+highShelfGainSliderAttachment	Source/PluginEditor.h	/^  std::unique_ptr<APVTS::SliderAttachment> highShelfGainSliderAttachment;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<APVTS::SliderAttachment>
+inputGainLabel	Source/PluginEditor.h	/^  juce::Label inputGainLabel;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Label
+inputGainSlider	Source/PluginEditor.h	/^  juce::Slider inputGainSlider;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Slider
+inputGainSliderAttachment	Source/PluginEditor.h	/^  std::unique_ptr<APVTS::SliderAttachment> inputGainSliderAttachment;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<APVTS::SliderAttachment>
+inputGainer	Source/PluginProcessor.h	/^  juce::dsp::Gain<float> inputGainer;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::dsp::Gain<float>
+irFileLabel	Source/PluginEditor.h	/^  juce::Label irFileLabel;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Label
+isBusesLayoutSupported	Source/PluginProcessor.cpp	/^bool PianoResAudioProcessor::isBusesLayoutSupported($/;"	f	class:PianoResAudioProcessor	typeref:typename:bool
+isMidiEffect	Source/PluginProcessor.cpp	/^bool PianoResAudioProcessor::isMidiEffect() const {$/;"	f	class:PianoResAudioProcessor	typeref:typename:bool
+juce	Source/CustomStyle.cpp	/^namespace juce {$/;"	n	file:
+juce	Source/CustomStyle.h	/^namespace juce {$/;"	n
+loadImpulseResponse	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::loadImpulseResponse() {$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+lowShelfFilter	Source/PluginProcessor.h	/^      lowShelfFilter;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,juce::dsp::IIR::Coefficients<float>>
+lowShelfFreqLabel	Source/PluginEditor.h	/^  juce::Label lowShelfFreqLabel;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Label
+lowShelfFreqSlider	Source/PluginEditor.h	/^  juce::Slider lowShelfFreqSlider;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Slider
+lowShelfFreqSliderAttachment	Source/PluginEditor.h	/^  std::unique_ptr<APVTS::SliderAttachment> lowShelfFreqSliderAttachment;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<APVTS::SliderAttachment>
+lowShelfGainLabel	Source/PluginEditor.h	/^  juce::Label lowShelfGainLabel;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Label
+lowShelfGainSlider	Source/PluginEditor.h	/^  juce::Slider lowShelfGainSlider;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Slider
+lowShelfGainSliderAttachment	Source/PluginEditor.h	/^  std::unique_ptr<APVTS::SliderAttachment> lowShelfGainSliderAttachment;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<APVTS::SliderAttachment>
+modifiedIRBuffer	Source/PluginProcessor.h	/^  juce::AudioBuffer<float> modifiedIRBuffer;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::AudioBuffer<float>
+openButtonClicked	Source/PluginEditor.cpp	/^void PianoResAudioProcessorEditor::openButtonClicked() {$/;"	f	class:PianoResAudioProcessorEditor	typeref:typename:void
+openIRFileButton	Source/PluginEditor.h	/^  juce::TextButton openIRFileButton;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::TextButton
+originalIRBuffer	Source/PluginProcessor.h	/^  juce::AudioBuffer<float> originalIRBuffer;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::AudioBuffer<float>
+outputGainLabel	Source/PluginEditor.h	/^  juce::Label outputGainLabel;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Label
+outputGainSlider	Source/PluginEditor.h	/^  juce::Slider outputGainSlider;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Slider
+outputGainSliderAttachment	Source/PluginEditor.h	/^  std::unique_ptr<APVTS::SliderAttachment> outputGainSliderAttachment;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<APVTS::SliderAttachment>
+outputGainer	Source/PluginProcessor.h	/^  juce::dsp::Gain<float> outputGainer;$/;"	m	class:PianoResAudioProcessor	typeref:typename:juce::dsp::Gain<float>
+paint	Source/PluginEditor.cpp	/^void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {$/;"	f	class:PianoResAudioProcessorEditor	typeref:typename:void
+prepareToPlay	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::prepareToPlay(double sampleRate,$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+processBlock	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+producesMidi	Source/PluginProcessor.cpp	/^bool PianoResAudioProcessor::producesMidi() const {$/;"	f	class:PianoResAudioProcessor	typeref:typename:bool
+releaseResources	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::releaseResources() {$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+releaseTimeLabel	Source/PluginEditor.h	/^  juce::Label releaseTimeLabel;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Label
+releaseTimeSlider	Source/PluginEditor.h	/^  juce::Slider releaseTimeSlider;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:juce::Slider
+releaseTimeSliderAttachment	Source/PluginEditor.h	/^  std::unique_ptr<APVTS::SliderAttachment> releaseTimeSliderAttachment;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::unique_ptr<APVTS::SliderAttachment>
+resized	Source/PluginEditor.cpp	/^void PianoResAudioProcessorEditor::resized() {$/;"	f	class:PianoResAudioProcessorEditor	typeref:typename:void
+setCurrentProgram	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::setCurrentProgram(int \/*index*\/) {}$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+setIRBufferSize	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::setIRBufferSize(int newNumChannels,$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+setStateInformation	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::setStateInformation(const void *\/*data*\/,$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+shouldPaintWaveform	Source/PluginEditor.h	/^  bool shouldPaintWaveform = false;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:bool
+updateFilterParameters	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::updateFilterParameters() {$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+updateIRParameters	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::updateIRParameters() {$/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+updateImpulseResponse	Source/PluginProcessor.cpp	/^void PianoResAudioProcessor::updateImpulseResponse($/;"	f	class:PianoResAudioProcessor	typeref:typename:void
+waveformValues	Source/PluginEditor.h	/^  std::vector<float> waveformValues;$/;"	m	class:PianoResAudioProcessorEditor	typeref:typename:std::vector<float>
+~CustomStyle	Source/CustomStyle.cpp	/^CustomStyle::~CustomStyle() {}$/;"	f	class:juce::CustomStyle
+~PianoResAudioProcessor	Source/PluginProcessor.cpp	/^PianoResAudioProcessor::~PianoResAudioProcessor() {}$/;"	f	class:PianoResAudioProcessor
+~PianoResAudioProcessorEditor	Source/PluginEditor.cpp	/^PianoResAudioProcessorEditor::~PianoResAudioProcessorEditor() {$/;"	f	class:PianoResAudioProcessorEditor

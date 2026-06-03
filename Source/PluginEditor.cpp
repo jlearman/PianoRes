@@ -47,6 +47,11 @@ PianoResAudioProcessorEditor::PianoResAudioProcessorEditor(PianoResAudioProcesso
   dryWetMixSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
       audioProcessor.apvts, "DryWetMix", dryWetMixSlider);
 
+  createSlider(releaseTimeSlider, " sec");
+  createLabel(releaseTimeLabel, "Release", &releaseTimeSlider);
+  releaseTimeSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
+      audioProcessor.apvts, "ReleaseTime", releaseTimeSlider);
+
   createSlider(lowShelfFreqSlider, " Hz");
   createLabel(lowShelfFreqLabel, "LowFreq", &lowShelfFreqSlider);
   lowShelfFreqSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
@@ -142,6 +147,9 @@ void PianoResAudioProcessorEditor::resized() {
                              getHeight() - topBottomMargin - dialHeight,
                              dialWidth, dialHeight);
   dryWetMixSlider.setBounds(leftRightMargin + dialWidth * 2,
+                            getHeight() - topBottomMargin - dialHeight,
+                            dialWidth, dialHeight);
+  releaseTimeSlider.setBounds(leftRightMargin + dialWidth * 3,
                             getHeight() - topBottomMargin - dialHeight,
                             dialWidth, dialHeight);
   lowShelfFreqSlider.setBounds(getWidth() - leftRightMargin - dialWidth * 2,

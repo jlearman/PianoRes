@@ -107,7 +107,7 @@ void PianoResAudioProcessor::prepareToPlay(double sampleRate,
   adsrParams.attack = 0.1f; // Seconds -- make a parameter?
   adsrParams.decay = 0.0f;
   adsrParams.sustain = 1.0f;
-  adsrParams.release = 0.5f; // Release time // TODO: make this a parameter
+  adsrParams.release = apvts.getRawParameterValue("ReleaseTime")->load();
   adsr.setParameters(adsrParams);
 }
 
@@ -187,14 +187,19 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
       auto message = metadata.getMessage();
 
       // Get its position relative to the start of this block (0 to buffer.getNumSamples() - 1)
-	  // int samplePos = metadata.samplePosition; // no point: always zero since we're processing the whole block
-	  // TODO: sample-accurate pedaling.  It's fine without it for live playing, but when
+      // int samplePos = metadata.samplePosition; // no point: always zero since we're processing the whole block
+      // TODO: sample-accurate pedaling.  It's fine without it for live playing, but when
       // using MIDI in a DAW, sustain on/off messages can get stacked up due to sloppy editing.
 
       if (message.isSustainPedalOn()) {
           adsr.noteOn();
           convolver.reset();
       } else if (message.isSustainPedalOff()) {
+          auto releaseTime = apvts.getRawParameterValue("ReleaseTime")->load();
+          if (releaseTime != adsrParams.release) {
+              adsrParams.release = releaseTime;
+              adsr.setParameters(adsrParams);
+          }
           adsr.noteOff();
       }
   }
@@ -295,9 +300,8 @@ PianoResAudioProcessor::createParameters() {
   gainRange.setSkewForCentre(0.0f);
   juce::NormalisableRange<float> dryWetMixRange =
       juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f);
-  juce::NormalisableRange<float> decayTimeRange =
-      juce::NormalisableRange<float>(0.10f, 8.00f, 0.01f);
-  decayTimeRange.setSkewForCentre(3.0f);
+  juce::NormalisableRange<float> releaseTimeRange =
+      juce::NormalisableRange<float>(0.0f, 1.00f, 0.01f);
   juce::NormalisableRange<float> preDelayTimeRange =
       juce::NormalisableRange<float>(0.0f, 1000.0f, 1.0f, 0.5f);
   juce::NormalisableRange<float> stereoWidthRange =
@@ -323,9 +327,9 @@ PianoResAudioProcessor::createParameters() {
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
       "OutputGain", "Output Gain", gainRange, 0.0f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-      "DryWetMix", "Mix", dryWetMixRange, 100.0f));
+      "DryWetMix", "Mix", dryWetMixRange, 50.0f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-      "DecayTime", "Decay", decayTimeRange, 3.0f));
+      "ReleaseTime", "Decay", releaseTimeRange, 0.2f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
       "PreDelayTime", "Pre-delay", preDelayTimeRange, 0.0f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(

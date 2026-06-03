@@ -12,3 +12,8 @@ Thumbs.db
 *.user
 *.suo
 diffs
+
+# Misc
+*.swp
+junk
+tmp/
