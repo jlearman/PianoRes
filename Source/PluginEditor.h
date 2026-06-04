@@ -35,10 +35,10 @@ private:
 
   juce::AudioFormatManager formatManager;
   std::unique_ptr<juce::FileChooser> fileChooser;
+  juce::AudioBuffer<float> embeddedIrBuffer; // for default IR file
 
   std::vector<float> waveformValues;
-  bool shouldPaintWaveform = false;
-  bool enableIRParameters = false;
+  int waveformPainted = 0; // FIXME: find out why boolean doesn't work
 
   juce::TextButton openIRFileButton;
   juce::Label irFileLabel;
@@ -73,6 +73,7 @@ private:
   void createSlider(juce::Slider &slider, juce::String textValueSuffix);
   void createLabel(juce::Label &label, juce::String text,
                    juce::Component *slider);
+  void openMemoryIrFile();
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PianoResAudioProcessorEditor)
 };

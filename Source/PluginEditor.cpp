@@ -71,6 +71,8 @@ PianoResAudioProcessorEditor::PianoResAudioProcessorEditor(PianoResAudioProcesso
   createLabel(highShelfGainLabel, "HighGain", &highShelfGainSlider);
   highShelfGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
       audioProcessor.apvts, "HighShelfGain", highShelfGainSlider);
+
+  openMemoryIrFile();
 }
 
 PianoResAudioProcessorEditor::~PianoResAudioProcessorEditor() {
@@ -92,36 +94,34 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
 
   g.setColour(juce::Colour::fromRGB(158, 119, 119));
 
-  if (shouldPaintWaveform == true) {
-    const int waveformWidth = 80 * 3;
-    const int waveformHeight = 100;
+  if (waveformPainted < 2) { // FIXME: find out why boolean doesn't work
+      const int waveformWidth = 80 * 3;
+      const int waveformHeight = 100;
 
-    juce::Path waveformPath;
-    waveformValues.clear();
-    waveformPath.startNewSubPath(15, waveformHeight + 60);
+      juce::Path waveformPath;
+      waveformValues.clear();
+      waveformPath.startNewSubPath(15, waveformHeight + 60);
 
-    auto buffer = audioProcessor.getModifiedIR();
-    if (buffer.getNumSamples() < 1) {
-      buffer = audioProcessor.getOriginalIR();
-    }
-    const float waveformResolution = 1024.0f;
-    const int ratio =
-        static_cast<int>(buffer.getNumSamples() / waveformResolution);
+      auto buffer = audioProcessor.getOriginalIR();
+      const float waveformResolution = 1024.0f;
+      const int ratio =
+          static_cast<int>(buffer.getNumSamples() / waveformResolution);
 
-    auto bufferPointer = buffer.getReadPointer(0);
-    for (int sample = 0; sample < buffer.getNumSamples(); sample += ratio) {
-      waveformValues.push_back(juce::Decibels::gainToDecibels<float>(
-          std::fabsf(bufferPointer[sample]), -72.0f));
-    }
-    for (int xPos = 0; xPos < waveformValues.size(); ++xPos) {
-      auto yPos = juce::jmap<float>(waveformValues[xPos], -72.0f, 0.0f,
-                                    waveformHeight + 60, 75);  // FIXME: where do these numbers come from?
-      waveformPath.lineTo(15 + xPos / waveformResolution * waveformWidth, yPos);
-    }
+      auto bufferPointer = buffer.getReadPointer(0);
+      for (int sample = 0; sample < buffer.getNumSamples(); sample += ratio) {
+          waveformValues.push_back(juce::Decibels::gainToDecibels<float>(
+              std::fabsf(bufferPointer[sample]), -72.0f));
+      }
+      for (int xPos = 0; xPos < waveformValues.size(); ++xPos) {
+          auto yPos = juce::jmap<float>(waveformValues[xPos], -72.0f, 0.0f,
+              waveformHeight + 60, 75);  // FIXME: where do these numbers come from?
+          waveformPath.lineTo(15 + xPos / waveformResolution * waveformWidth, yPos);
+      }
 
-    g.strokePath(waveformPath, juce::PathStrokeType(1.0f));
+      g.strokePath(waveformPath, juce::PathStrokeType(1.0f));
 
-    shouldPaintWaveform = false;
+      waveformPainted++;
+      DBG("painted waveform " << buffer.getNumSamples());
   }
 }
 
@@ -188,15 +188,43 @@ void PianoResAudioProcessorEditor::openButtonClicked() {
                      static_cast<int>(reader->lengthInSamples), 0, true, true);
         audioProcessor.loadImpulseResponse();
 
-        shouldPaintWaveform = true;
-        enableIRParameters = true;
-        // reverseButton.setEnabled(enableIRParameters);
-        // decayTimeSlider.setEnabled(enableIRParameters);
+        waveformPainted = 0;
         repaint();
       }
     }
   });
 }
+
+void PianoResAudioProcessorEditor::openMemoryIrFile() {
+    // update text of IR file label
+    irFileLabel.setText("built-in impulse response", juce::dontSendNotification);
+    irFileLabel.repaint();
+
+    // BinaryData automatically replaces non-alphanumeric characters (like '.') with underscores
+    const void* rawData = BinaryData::cp4cfximpulseshort_flac;
+    size_t rawDataSize = BinaryData::cp4cfximpulseshort_flacSize;
+
+    if (rawData == nullptr || rawDataSize == 0) return;
+
+    // Wrap the raw binary pointer into an input stream
+    auto inputStream = std::make_unique<juce::MemoryInputStream>(rawData, rawDataSize, false);
+
+    // Create a reader from the stream
+    std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(std::move(inputStream)));
+
+    if (reader != nullptr) {
+        audioProcessor.setIRBufferSize(
+            static_cast<int>(reader->numChannels),
+            static_cast<int>(reader->lengthInSamples));
+        reader->read(&audioProcessor.getOriginalIR(), 0,
+            static_cast<int>(reader->lengthInSamples), 0, true, true);
+        audioProcessor.loadImpulseResponse();
+
+        waveformPainted = 0;
+        repaint();
+    }
+}
+
 
 void PianoResAudioProcessorEditor::createSlider(juce::Slider &slider,
                                               juce::String textValueSuffix) {
