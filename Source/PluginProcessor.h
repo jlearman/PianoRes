@@ -79,8 +79,9 @@ private:
   APVTS::ParameterLayout createParameters();
 
   juce::dsp::Gain<float> inputGainer;
+  juce::dsp::Gain<float> dryGainer;
+  juce::dsp::Gain<float> wetGainer;
   juce::dsp::Gain<float> outputGainer;
-  juce::dsp::DryWetMixer<float> dryWetMixer;
   juce::dsp::Convolution convolver{ juce::dsp::Convolution::NonUniform { 1024 } };
   juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,
                                  juce::dsp::IIR::Coefficients<float>>
@@ -88,6 +89,7 @@ private:
   juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,
                                  juce::dsp::IIR::Coefficients<float>>
       highShelfFilter;
+  juce::AudioBuffer<float> dryBufferCopy; // for mixing wet and dry with different gains
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PianoResAudioProcessor)

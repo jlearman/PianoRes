@@ -37,20 +37,25 @@ PianoResAudioProcessorEditor::PianoResAudioProcessorEditor(PianoResAudioProcesso
   inputGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
       audioProcessor.apvts, "InputGain", inputGainSlider);
 
-  createSlider(outputGainSlider, " dB");
-  createLabel(outputGainLabel, "Output", &outputGainSlider);
-  outputGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-      audioProcessor.apvts, "OutputGain", outputGainSlider);
+  createSlider(dryGainSlider, " dB");
+  createLabel(dryGainLabel, "Dry", &dryGainSlider);
+  dryGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
+      audioProcessor.apvts, "DryGain", dryGainSlider);
 
-  createSlider(dryWetMixSlider, " %");
-  createLabel(dryWetMixLabel, "Mix", &dryWetMixSlider);
-  dryWetMixSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-      audioProcessor.apvts, "DryWetMix", dryWetMixSlider);
+  createSlider(wetGainSlider, " dB");
+  createLabel(wetGainLabel, "Wet", &wetGainSlider);
+  wetGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
+      audioProcessor.apvts, "WetGain", wetGainSlider);
 
   createSlider(releaseTimeSlider, " sec");
   createLabel(releaseTimeLabel, "Release", &releaseTimeSlider);
   releaseTimeSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
       audioProcessor.apvts, "ReleaseTime", releaseTimeSlider);
+
+  createSlider(outputGainSlider, " dB");
+  createLabel(outputGainLabel, "Output", &outputGainSlider);
+  outputGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
+      audioProcessor.apvts, "OutputGain", outputGainSlider);
 
   createSlider(lowShelfFreqSlider, " Hz");
   createLabel(lowShelfFreqLabel, "LowFreq", &lowShelfFreqSlider);
@@ -140,18 +145,26 @@ void PianoResAudioProcessorEditor::resized() {
                         20);
   bypassButton.setBounds(getWidth() - leftRightMargin - dialWidth * 3,
                          topBottomMargin, dialWidth, 20);
-  inputGainSlider.setBounds(leftRightMargin,
+
+  // sliders planced from left to right
+  int ix = 0; // x axis index
+  inputGainSlider.setBounds(leftRightMargin + dialWidth * ix++,
                             getHeight() - topBottomMargin - dialHeight,
                             dialWidth, dialHeight);
-  outputGainSlider.setBounds(leftRightMargin + dialWidth,
-                             getHeight() - topBottomMargin - dialHeight,
-                             dialWidth, dialHeight);
-  dryWetMixSlider.setBounds(leftRightMargin + dialWidth * 2,
+  dryGainSlider.setBounds(leftRightMargin + dialWidth * ix++,
                             getHeight() - topBottomMargin - dialHeight,
                             dialWidth, dialHeight);
-  releaseTimeSlider.setBounds(leftRightMargin + dialWidth * 3,
+  wetGainSlider.setBounds(leftRightMargin + dialWidth * ix++,
                             getHeight() - topBottomMargin - dialHeight,
                             dialWidth, dialHeight);
+  releaseTimeSlider.setBounds(leftRightMargin + dialWidth * ix++,
+                            getHeight() - topBottomMargin - dialHeight,
+                            dialWidth, dialHeight);
+  outputGainSlider.setBounds(leftRightMargin + dialWidth * ix++,
+                            getHeight() - topBottomMargin - dialHeight,
+                            dialWidth, dialHeight);
+
+  // sliders placed from right margin to left
   lowShelfFreqSlider.setBounds(getWidth() - leftRightMargin - dialWidth * 2,
                                topBottomMargin + dialHeight / 3 * 2, dialWidth,
                                dialHeight);

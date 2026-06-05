@@ -89,12 +89,16 @@ void PianoResAudioProcessor::prepareToPlay(double sampleRate,
   spec.numChannels = getTotalNumOutputChannels();
   spec.maximumBlockSize = samplesPerBlock;
 
+  
   inputGainer.prepare(spec);
   inputGainer.reset();
+  // inputGainer.setRampDurationSeconds(0.02); // TODO? avoid clicks when moving sliders
+  dryGainer.prepare(spec);
+  dryGainer.reset();
+  wetGainer.prepare(spec);
+  wetGainer.reset();
   outputGainer.prepare(spec);
   outputGainer.reset();
-  dryWetMixer.prepare(spec);
-  dryWetMixer.reset();
   convolver.prepare(spec);
   convolver.reset();
 
@@ -159,8 +163,9 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
 
   // acquire parameters from AudioProcessorValueTreeState
   auto inputGainValue = apvts.getRawParameterValue("InputGain");
+  auto dryGainValue = apvts.getRawParameterValue("DryGain");
+  auto wetGainValue = apvts.getRawParameterValue("WetGain");
   auto outputGainValue = apvts.getRawParameterValue("OutputGain");
-  auto dryWetMixValue = apvts.getRawParameterValue("DryWetMix");
   auto isBypassed = apvts.getRawParameterValue("Bypassed");
   updateFilterParameters();
 
@@ -169,16 +174,14 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
   }
 
   inputGainer.setGainDecibels(inputGainValue->load());
+  dryGainer.setGainDecibels(dryGainValue->load());
+  wetGainer.setGainDecibels(wetGainValue->load());
   outputGainer.setGainDecibels(outputGainValue->load());
-  dryWetMixer.setWetMixProportion(dryWetMixValue->load() / 100.0f);
 
-  auto block = juce::dsp::AudioBlock<float>(buffer);
-  auto context = juce::dsp::ProcessContextReplacing<float>(block);
-  inputGainer.process(context);
-  dryWetMixer.pushDrySamples(block);
-  convolver.process(context);
-  lowShelfFilter.process(context);
-  highShelfFilter.process(context);
+  // Keep the untouched dry signal
+  dryBufferCopy.makeCopyOf(buffer);
+
+  static bool isSustainPedalDown = false;
 
   // detect sustain pedal on/off messages and apply ADSR envelope
   for (const auto metadata : midiMessages)  // juce::MidiBufferMetadata
@@ -192,9 +195,15 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
       // using MIDI in a DAW, sustain on/off messages can get stacked up due to sloppy editing.
 
       if (message.isSustainPedalOn()) {
+          isSustainPedalDown = false;
           adsr.noteOn();
-          convolver.reset();
-      } else if (message.isSustainPedalOff()) {
+          convolver.reset(); // FIXME: this can cause a click when the pedal is pressed, but without it,
+          // the release phase of the previous notes will still be convolved with the IR,
+          // which isn't how a piano works.  A better solution might be to have the 
+          // convolver only process the "active" part of the buffer, but how?
+      }
+      else if (message.isSustainPedalOff()) {
+          isSustainPedalDown = true;
           auto releaseTime = apvts.getRawParameterValue("ReleaseTime")->load();
           if (releaseTime != adsrParams.release) {
               adsrParams.release = releaseTime;
@@ -203,9 +212,24 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
           adsr.noteOff();
       }
   }
-  adsr.applyEnvelopeToBuffer(buffer, 0, buffer.getNumSamples());
 
-  dryWetMixer.mixWetSamples(block);
+  auto block = juce::dsp::AudioBlock<float>(buffer);
+  auto context = juce::dsp::ProcessContextReplacing<float>(block);
+  inputGainer.process(context);
+  convolver.process(context);
+  lowShelfFilter.process(context);
+  highShelfFilter.process(context);
+  adsr.applyEnvelopeToBuffer(buffer, 0, buffer.getNumSamples());
+  wetGainer.process(context);
+
+  // Mix the dry signal back in with dry gain
+  auto dryBlock = juce::dsp::AudioBlock<float>(dryBufferCopy);
+  auto dryContext = juce::dsp::ProcessContextReplacing<float>(dryBlock);
+  dryGainer.process(dryContext);
+  for (int channel = 0; channel < totalNumInputChannels; ++channel)
+  {
+      buffer.addFrom(channel, 0, dryBufferCopy, channel, 0, buffer.getNumSamples());
+  }
   outputGainer.process(context);
 }
 
@@ -298,14 +322,8 @@ PianoResAudioProcessor::createParameters() {
   juce::NormalisableRange<float> gainRange =
       juce::NormalisableRange<float>(-72.0f, 36.0f, 0.1f);
   gainRange.setSkewForCentre(0.0f);
-  juce::NormalisableRange<float> dryWetMixRange =
-      juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f);
   juce::NormalisableRange<float> releaseTimeRange =
       juce::NormalisableRange<float>(0.0f, 1.00f, 0.01f);
-  juce::NormalisableRange<float> preDelayTimeRange =
-      juce::NormalisableRange<float>(0.0f, 1000.0f, 1.0f, 0.5f);
-  juce::NormalisableRange<float> stereoWidthRange =
-      juce::NormalisableRange<float>(0.0f, 200.0f, 1.0f);
   juce::NormalisableRange<float> lowShelfCutoffFreqRange =
       juce::NormalisableRange<float>(20.0f, 2000.0f, 1.0f);
   lowShelfCutoffFreqRange.setSkewForCentre(400.0f);
@@ -325,15 +343,13 @@ PianoResAudioProcessor::createParameters() {
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
       "InputGain", "Input Gain", gainRange, 0.0f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
+      "DryGain", "Dry Gain", gainRange, 0.0f));
+  parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
+      "WetGain", "Wet Gain", gainRange, -9.0f));
+  parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
       "OutputGain", "Output Gain", gainRange, 0.0f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-      "DryWetMix", "Mix", dryWetMixRange, 50.0f));
-  parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
       "ReleaseTime", "Decay", releaseTimeRange, 0.2f));
-  parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-      "PreDelayTime", "Pre-delay", preDelayTimeRange, 0.0f));
-  parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-      "StereoWidth", "Width", stereoWidthRange, 100.0f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
       "LowShelfFreq", "LowFreq", lowShelfCutoffFreqRange, 20.0f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
