@@ -2,11 +2,10 @@
 
 <JUCERPROJECT id="yymIIN" name="PianoRes" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" projectLineFeed="&#10;"
-              pluginFormats="buildAU,buildLV2,buildStandalone,buildVST,buildVST3"
-              pluginCode="Cnko" pluginRTASCategory="8" pluginAAXCategory="8,8192"
-              cppLanguageStandard="20" pluginVST3Category="Fx,Reverb,Stereo"
-              companyName="jlearman" displaySplashScreen="1" splashScreenColour="Light"
-              pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginFormats="buildAU,buildLV2,buildStandalone,buildVST3" pluginCode="Cnko"
+              pluginRTASCategory="8" pluginAAXCategory="8,8192" cppLanguageStandard="20"
+              pluginVST3Category="Fx,Reverb,Stereo" companyName="jlearman"
+              displaySplashScreen="1" splashScreenColour="Light" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
               pluginName="PianoRes" pluginDesc="Piano Resonance for sampled pianos"
               pluginManufacturer="jlearman" companyCopyright="CC0" companyEmail="jjlearman@gmail.com"
               version="0.0.2" lv2Uri="urn:jlearman:PianoRes">

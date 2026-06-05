@@ -104,7 +104,7 @@ void PianoResAudioProcessor::prepareToPlay(double sampleRate,
   highShelfFilter.reset();
 
   adsr.setSampleRate(sampleRate);
-  adsrParams.attack = 0.1f; // Seconds -- make a parameter?
+  adsrParams.attack = 0.05f; // Seconds -- make a parameter?
   adsrParams.decay = 0.0f;
   adsrParams.sustain = 1.0f;
   adsrParams.release = apvts.getRawParameterValue("ReleaseTime")->load();

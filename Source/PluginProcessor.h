@@ -81,8 +81,7 @@ private:
   juce::dsp::Gain<float> inputGainer;
   juce::dsp::Gain<float> outputGainer;
   juce::dsp::DryWetMixer<float> dryWetMixer;
-  // juce::dsp::DelayLine<float> delay;
-  juce::dsp::Convolution convolver;
+  juce::dsp::Convolution convolver{ juce::dsp::Convolution::NonUniform { 1024 } };
   juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,
                                  juce::dsp::IIR::Coefficients<float>>
       lowShelfFilter;
