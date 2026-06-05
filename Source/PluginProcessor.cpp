@@ -178,8 +178,6 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
   wetGainer.setGainDecibels(wetGainValue->load());
   outputGainer.setGainDecibels(outputGainValue->load());
 
-  // Keep the untouched dry signal
-  dryBufferCopy.makeCopyOf(buffer);
 
   static bool isSustainPedalDown = false;
 
@@ -216,6 +214,7 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
   auto block = juce::dsp::AudioBlock<float>(buffer);
   auto context = juce::dsp::ProcessContextReplacing<float>(block);
   inputGainer.process(context);
+  dryBufferCopy.makeCopyOf(buffer); // Keep the dry signal (after input gain)
   convolver.process(context);
   lowShelfFilter.process(context);
   highShelfFilter.process(context);
@@ -345,7 +344,7 @@ PianoResAudioProcessor::createParameters() {
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
       "DryGain", "Dry Gain", gainRange, 0.0f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-      "WetGain", "Wet Gain", gainRange, -9.0f));
+      "WetGain", "Wet Gain", gainRange, -7.5f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
       "OutputGain", "Output Gain", gainRange, 0.0f));
   parameters.push_back(std::make_unique<juce::AudioParameterFloat>(

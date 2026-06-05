@@ -214,8 +214,8 @@ void PianoResAudioProcessorEditor::openMemoryIrFile() {
     irFileLabel.repaint();
 
     // BinaryData automatically replaces non-alphanumeric characters (like '.') with underscores
-    const void* rawData = BinaryData::cp4cfximpulseshort_flac;
-    size_t rawDataSize = BinaryData::cp4cfximpulseshort_flacSize;
+    const void* rawData = BinaryData::accuratesalamandergrand6_2impulseshort_flac;
+    size_t rawDataSize = BinaryData::accuratesalamandergrand6_2impulseshort_flacSize;
 
     if (rawData == nullptr || rawDataSize == 0) return;
 
