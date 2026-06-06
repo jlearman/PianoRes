@@ -46,7 +46,7 @@ sample groups.]
 This works only with the VST (not VST3) version of Sforzando.  It might
 also work for LV2, but I haven't tried it.
 
-Copy Resources/gui-settings.json from this repo into the Sforzando GUI
+Copy Resources/gui-settings.xml from this repo into the Sforzando GUI
 directory (usually, "C:\Program Files\Plogue\Sforzando\GUI".)
 In Sforzando GUI, choose the SETTINGS tab, and set MIDI to "Process."
 

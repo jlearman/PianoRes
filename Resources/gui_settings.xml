@@ -1,0 +1,157 @@
+<?xml version="1.0" ?>
+<GUI w="775" h="335">
+
+    <Rect	x="0"	y="1"	w="775"	h="3"	fill_color="#5e5e5e88" drawMode="filled" frameWidth="0" /> 	
+    <Rect	x="0"	y="119"	w="272" h="3"	fill_color="#5e5e5e44" drawMode="filled" frameWidth="0" />
+
+    <!--Rect	x="0"	y="138"	w="272" h="3"	fill_color="#5e5e5e44" drawMode="filled" frameWidth="0" -->
+    <Rect	x="0"	y="165"	w="272" h="3"	fill_color="#5e5e5e44" drawMode="filled" frameWidth="0" />
+
+    <Rect	x="275"	y="165"	w="185" h="3" 	fill_color="#5e5e5e44" drawMode="filled" frameWidth="0" /> 		
+    <Rect	x="275"	y="119"	w="499" h="3" 	fill_color="#5e5e5e44" drawMode="filled" frameWidth="0" /> 		
+    <Rect	x="0"	y="262"	w="775" h="3"	fill_color="#5e5e5e88" drawMode="filled" frameWidth="0" /> 
+    <Rect	x="460"	y="4"	w="3"   h="258"	fill_color="#5e5e5e88" drawMode="filled" frameWidth="0" /> 	
+    <Rect	x="272"	y="4"	w="3"   h="258"	fill_color="#5e5e5e88" drawMode="filled" frameWidth="0" /> 		
+	
+	
+	<StaticText text="SETTINGS (for advanced users)"    x="11"  y="6"   w="400" h="12"  alignment="left" color_text="#95ACC7FF" transparent="1" />
+	<StaticText text="TUNING"                           x="470" y="126" w="85"  h="12"  alignment="left" color_text="#95ACC7FF" transparent="1" />
+	<StaticText text="PERFORMANCE MONITORING"           x="285" y="6"   w="400" h="12"  alignment="left" color_text="#95ACC7FF" transparent="1" />
+	<StaticText text="CURRENT HOST RENDERING SETTINGS"  x="470" y="6"   w="400" h="12"  alignment="left" color_text="#95ACC7FF" transparent="1" />
+
+	<StaticText  x="475" y="37"  w="70" h="18"  text="SampleRate"      alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_SAMPLERATE"    x="544"  y="37"  w="60" h="18"   format=": %5.0f" alignment="left" transparent="1" />
+	<StaticText x="475"  y="61"  w="70" h="18"  text="BSize(cur)"      alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_CURBUFFERSIZE" x="544"  y="61"   w="60" h="18"  format=": %5.0f" alignment="left" transparent="1" />
+	<StaticText x="475"  y="84"  w="70" h="18"  text="BSize(max)"      alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_MAXBUFFERSIZE" x="544"  y="84"   w="60" h="18"  format=": %5.0f" alignment="left" transparent="1" />	
+	<StaticText x="285"  y="30"  w="70" h="18"  text="RAM DIRECT"      alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_RAM_DIRECT"    x="355" y="30"   w="60" h="18"  format=": %4.2f MB" factor="9.5367431640625e-007" alignment="left" transparent="1" />
+	<StaticText x="285" y="47"  w="70" h="18"  text="RAM LOOP"        alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_RAM_LOOP"      x="355" y="47"   w="60" h="18"  format=": %4.2f MB" factor="9.5367431640625e-007" alignment="left" transparent="1" />
+	<StaticText x="285" y="64" w="70" h="18"  text="RAM STRM"        alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_RAM_STRM"      x="355" y="64"  w="60" h="18"  format=": %4.2f MB" factor="9.5367431640625e-007" alignment="left" transparent="1" />
+	<StaticText x="285" y="81" w="70" h="18"  text="RAM STRMX"       alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_RAM_STRMX"     x="355" y="81"  w="60" h="18"  format=": %4.2f MB" factor="9.5367431640625e-007" alignment="left" transparent="1" />
+	<StaticText x="285" y="98" w="70" h="18"  text="RAM TOTAL"       alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_RAM_TOTAL"     x="355" y="98"  w="60" h="18"  format=": %4.2f MB" factor="9.5367431640625e-007" alignment="left" transparent="1" />
+	
+
+	
+	<StaticText x="285"  y="125" w="70" h="18"  text="Disk"        alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_DISKUSAGE"     x="355"  y="125"  w="60" h="18"  format=": %3.f %%"  factor="100.0" alignment="left" transparent="1" />
+	<Label param="DID_STRMPENDINGREAD" x="400"  y="125"  w="60" h="18"  format="Cued %.0f"                   alignment="left" transparent="1" />	
+	<StaticText x="285"  y="142" w="70" h="18"  text="Disk Loss"   alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_STRMUNDERFLOW" x="355"  y="142"  w="60" h="18"  format=": %4.0f"                   alignment="left" transparent="1" />
+			
+	 
+	<StaticText text="Scala File"      x="475" y="166" w="150" h="17" alignment="left"  />      
+	<StaticText x="544"  y="166" w="5" h="17"  text=":"         alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_SCALANAME"          x="551" y="166" w="154" h="18" alignment="center" color_back="#2A2A2AFF" color_border="#616161FF" />
+			
+  	<CommandButton image="btn_set.png" x="700" y="166" w="50" h="20"  command="load:scl" data0="scl" data1="Please select Scala file" />	
+	
+
+			  
+	<StaticText text="Scala Center"  x="475" y="195" w="80" h="17" alignment="left"	 transparent="1"  />		
+    <StaticText x="544"  y="195" w="5" h="17"  text=":"         alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />	
+	<OptionMenu  param="DID_SCALACENTER"  x="551" y="195" w="35" h="18" alignment="center" color_back="#2A2A2AFF" color_border="#616161FF">
+		<OptionItem name="A1"   	value="21" />
+		<OptionItem name="C4"   	value="48" />
+	    <OptionItem name="C#4"   	value="49" />
+	    <OptionItem name="D4"   	value="50" />
+	    <OptionItem name="D#4"      value="51" />
+	    <OptionItem name="E4"       value="52" />
+	    <OptionItem name="F4"       value="53" />
+ 		<OptionItem name="F#4"   	value="54" />
+	    <OptionItem name="G4"   	value="55" />
+	    <OptionItem name="G#4"   	value="56" />
+	    <OptionItem name="A4"       value="57" />
+	    <OptionItem name="A#4"      value="58" />
+	    <OptionItem name="B4"       value="59" />
+		<OptionItem name="C5"   	value="60" />
+	    <OptionItem name="C#5"   	value="61" />
+	    <OptionItem name="D5"   	value="62" />
+	    <OptionItem name="D#5"      value="63" />
+	    <OptionItem name="E5"       value="64" />
+	    <OptionItem name="F5"       value="65" />
+ 		<OptionItem name="F#5"   	value="66" />
+	    <OptionItem name="G5"   	value="67" />
+	    <OptionItem name="G#5"   	value="68" />
+	    <OptionItem name="A5"       value="69" />
+	    <OptionItem name="A#5"      value="70" />
+	    <OptionItem name="B5"       value="71" />
+		<OptionItem name="C6"    	value="72" />
+	</OptionMenu>
+			
+	<StaticText x="30"  y="42" w="140" h="18"  text="Max Engine RAM Allocation"   alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<StaticText x="187"  y="42" w="5" h="18"  text=":"         alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<DynMaxMenu  param="DID_RAM_STRM_MAX" x="195" y="42" w="60" h="18" alignment="center" font_size="" color_back="#2A2A2AFF" color_border="#616161FF"/>  					
+			
+	<StaticText text="Inst. Disk Pre-Caching" x="30"  y="82" w="135" h="18" alignment="left" transparent="1" color_back="#FFFFFF00" color_border="#FFFFFF00"/>
+	<StaticText text=":"  	                  x="187" y="82" w="5"   h="18" alignment="left" transparent="1" color_back="#FFFFFF00" color_border="#FFFFFF00"/>
+	<OptionMenu param="DID_STREAMING"         x="195" y="82" w="60"  h="18" alignment="center" color_back="#2A2A2AFF" color_border="#616161FF">
+		<OptionItem name="  16 kB"  value="16" />			
+		<OptionItem name="  32 kB"  value="32" />	
+		<OptionItem name="  64 kB"  value="64" />	  	    
+		<OptionItem name="  96 kB"  value="96" />	    
+		<OptionItem name=" 128 kB"  value="128"/>	  
+		<OptionItem name=" 256 kB"  value="256"/>  	 				
+	</OptionMenu>
+
+	<StaticText text="MIDI Out"            x="30"  y="135" w="135" h="18" alignment="left" transparent="1" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<StaticText text=":"  	               x="187" y="135" w="5"   h="18" alignment="left" transparent="1" color_back="#FFFFFF00" color_border="#FFFFFF00"/>
+	<OptionMenu param="DID_MIDI_OUT_MODE"  x="195" y="135" w="60"  h="18" alignment="center"  color_back="#2A2A2AFF" color_border="#616161FF">
+        <OptionItem name="Process" value="0" />
+        <OptionItem name="Mute"    value="1" />
+        <OptionItem name="Through" value="2" />        
+    </OptionMenu>
+
+	<StaticText text="Tuning"  x="475" y="224" w="50" h="17" alignment="left" transparent="1" color_back="#FFFFFF00" color_border="#FFFFFF00"/>
+	<StaticText x="544"  y="224" w="5" h="17"  text=":"         alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<OptionMenu param="DID_GLOBALTUNING" x="551" y="224" w="150" h="18" alignment="center" color_back="#2A2A2AFF" color_border="#616161FF" >    	
+	    <OptionItem name="English pitchpipe 380 (1720)"  value="-253.805" />
+	    <OptionItem name="Handel fork1 409 (1780)"       value="-126.483" />
+	    <OptionItem name="Baroque 415"                   value="-101.271" />	 
+	    <OptionItem name="Handel fork 422.5 (1740)"      value="-70.2626" />
+	    <OptionItem name="Dresden opera 423.2 (1815)"    value="-67.3967" />
+	    <OptionItem name="Internet meme 432 (2020)"      value="-31.766654" />
+	    <OptionItem name="French Law 435 (1859)"         value="-19.7857" />
+	    <OptionItem name="British Phil 439 (1896)"       value="-3.9391"  />
+        <OptionItem name="International 440"             value="0"        />
+	    <OptionItem name="European 442"                  value="7.85142"  />
+	    <OptionItem name="Germany, China 445"            value="19.5622"  />
+	    <OptionItem name="La Scala in Milan 451 (18th)"  value="42.7487"  />
+	</OptionMenu>	
+		
+	<StaticText                   x="285" y="173"   w="60" h="18"  text="Note Ons"       alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />	
+	<Label param="DID_NOTES"      x="355" y="173"   w="50" h="18"   format=": %3.0f"     alignment="left" transparent="1" />
+	<StaticText                   x="285" y="190"   w="70" h="18"  text="Used Layers"    alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_LAYERS"     x="355" y="190"   w="50" h="18"  format=": %3.0f"      alignment="left" transparent="1" />
+	<StaticText                   x="285" y="207"   w="60" h="18"  text="Used Filters"   alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_FILTERS"    x="355" y="207"   w="50" h="18"  format=": %3.0f"      alignment="left" transparent="1" />
+	<StaticText                   x="285" y="224"   w="60" h="18"  text="Used EGs"       alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" /> 
+	<Label param="DID_EGS"        x="355" y="224"   w="50" h="18"  format=": %3.0f"      alignment="left" transparent="1" />
+	<StaticText                   x="285" y="241"   w="60" h="18"  text="Used LFOs"      alignment="left" color_back="#FFFFFF00" color_border="#FFFFFF00" />
+	<Label param="DID_LFOS"       x="355" y="241"   w="50" h="18"  format=": %3.0f"      alignment="left" transparent="1" />
+	 
+	 
+	<StaticText text="User files path:"        x="30"  y="172" w="100" h="18" alignment="left" transparent="1" />	
+	<Label      param="DID_PATH_USER" text="*" x="30"  y="190" w="198" h="18" alignment="left"color_back="#2A2A2AFF" color_border="#616161FF" />
+	<CommandButton image="btn_set.png"         x="225" y="190" w="50"  h="20" command="folder:user" data0="sfz" data1="Please select folder" />         
+	
+	<StaticText    text="Converted files path:"    x="30"  y="223" w="110" h="18" alignment="left" transparent="1" />		
+	<Label     param="DID_PATH_CONVERTED"text="*"  x="30"  y="241" w="198" h="18" alignment="left" color_back="#2A2A2AFF" color_border="#616161FF" />	
+	<CommandButton image="btn_set.png"             x="225" y="241" w="50"  h="20" command="folder:convert" data0="sfz" data1="Please select folder" />		
+
+	<Label param="DID_PRODUCTVERSION" text="temp"  x="10"  y="279" w="190" h="18" alignment="right" transparent="1" color_text="#95ACC7FF" />
+	<Label param="DID_VERSION"        text="temp"  x="10"  y="304" w="190" h="18" alignment="right" color_text="#95ACC7FF" transparent="1" />
+												   
+	<CommandButton image="btn_player_v.png"        x="205" y="278" w="93"  h="21" command="versioncheck_product" data1="Checking sforzando Version" />	
+	
+    <Label param="DID_WRAPPERVERSION" text="temp"                   x="341" y="279" w="259" h="18" alignment="left" color_text="#95ACC7FF" transparent="1" />						          								
+	<StaticText text="(c)2005-2026 Plogue Art et Technologie, Inc." x="341" y="304" w="259" h="18" alignment="left" transparent="1" />	
+
+	<CommandButton command="launch_url" data0="https://www.plogue.com/help.html" image="btn_help.png" x="600"  y="280" w="134" h="38" transparent="1" />
+
+</GUI>
