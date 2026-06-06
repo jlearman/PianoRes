@@ -1,20 +1,28 @@
 # PianoRes
 
-PianoRes is an audio plugin that adds damper resonance to sampled pianos, built using JUCE.
+PianoRes is an audio plugin that adds damper resonance to sampled pianos.
 It is designed to enhance the realism of sampled pianos by simulating the
 sympathetic vibrations that occur when the sustain (damper) pedal is pressed.
-This plugin can be used in digital audio workstations (DAWs) or live hosts to
-increase realism.
+This plugin can be used to increase realism in digital audio workstations (DAWs)
+or live hosts.
 
 Built using the JUCE framework, PianoRes is compatible with various plugin
-formats, including LV2, VST, VST3, and AU.
+formats, including LV2, VST, VST3, and AU, on various platforms.
+(Currently, only VST3 on Windows.  Open an issue for what you want!)
+
+## Installation
+
+Get the plug, example IR files, and README by clicking the Release
+link at the right of the github Code page.  These are in a zip file.
+Follow the instructions in the README file.
 
 ## Usage
 
 Plug PianoRes to process the audio output your piano sample player
 (sfizz, Sforzando, etc.) Unfortunately, neither sfizz nor Sforzando
 passes MIDI through, so you will need to do some MIDI or audio
-routing on your host.
+routing on your host.  There's a trick to get Sforzando to pass MIDI,
+see below.
 
 One option is to use two chains or tracks.  On one track, plugin the player.
 On the other track, plugin PianoRes.  Set both to receive MIDI from the same
@@ -33,13 +41,25 @@ damper resonance samples and you can't easily disable them, you can still
 use PianoRes. [Note: editing the sfz file you can remove the resonance
 sample groups.]
 
+### Getting SFZ to pass MIDI
+
+This works only with the VST (not VST3) version of Sforzando.  It might
+also work for LV2, but I haven't tried it.
+
+Copy Resources/gui-settings.json from this repo into the Sforzando GUI
+directory (usually, "C:\Program Files\Plogue\Sforzando\GUI".)
+In Sforzando GUI, choose the SETTINGS tab, and set MIDI to "Process."
+
+Then you can simply plug PianoRes following Sforzando, and ignore
+the alternatives below.
+
 ### Usage in Reaper
 
 1. Add a track and plug in your sample player configured with your sampleset (e.g.,
-    Sforzando with SalamanderGrand.)
+    Sforzando with Accurate Salamander Grand 6.2beta2.)
 2. Add another track and plug in PianoRes.  Load the impulse file. (Any piano resonance
    impulse file will do, but ideally one created with your piano sampleset.)
-3. Set PianoRes wet/dry to 100%
+3. Set PianoRes dry control to 0%
 4. Click the piano track's "ROUTE" button and click "Add new send", and choose
    the PianoRes Track
 5. Control the amount of resonance using the PianoRes track's volume slider
@@ -50,19 +70,20 @@ sample groups.]
 
 The plugin has a file chooser to select the impulse response (IR) file,
 which is made from summing all the notes of a piano, ideally at low velocity.
-The plugin also has a mix control to adjust the balance between the dry signal
-(the original piano sound) and the wet signal (the damper resonance effect).
+An impulse file for AccurateSalamanderGrand 6.2beta2 is included by default.
+The plugin also has gain controls for the dry signal (the original piano sound)
+and the wet signal (the damper resonance effect).
 The IR file should be a stereo audio file (e.g., WAV, AIF, OGG, or FLAC.)
 
 The longer the IR file, the more realistic the damper resonance will sound,
 but it will also use more CPU resources. A good starting point is to use an
 IR file that is around 5-10 seconds long.
 
-Several IR files will be included with the plugin, but you can also create your
-own by recording all notes a piano and summing them together in a DAW, and
-normalizint it.
+Several IR files are included with the plugin, and you can create your
+own by recording all notes on a piano and summing them together in a DAW,
+and normalizint it.
 
-The plugin also has a release time control, which adjusts how quickly the
+The plugin has a release time control, which adjusts how quickly the
 damper resonance fades out as the sustain pedal is released.
 
 [NYI] Half-pedaling
