@@ -62,6 +62,7 @@ public:
 
   void loadImpulseResponse();
   void updateImpulseResponse(juce::AudioBuffer<float> irBuffer);
+  void openMemoryIrFile();
 
   void updateIRParameters();
   void updateFilterParameters();
@@ -71,6 +72,8 @@ public:
 private:
   juce::AudioBuffer<float> originalIRBuffer;
   juce::AudioBuffer<float> modifiedIRBuffer;
+
+  juce::AudioFormatManager formatManager;
 
   // Use an ADSR to control sustain release
   juce::ADSR adsr;

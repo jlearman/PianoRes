@@ -77,7 +77,7 @@ PianoResAudioProcessorEditor::PianoResAudioProcessorEditor(PianoResAudioProcesso
   highShelfGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
       audioProcessor.apvts, "HighShelfGain", highShelfGainSlider);
 
-  openMemoryIrFile();
+  audioProcessor.openMemoryIrFile();
 }
 
 PianoResAudioProcessorEditor::~PianoResAudioProcessorEditor() {
@@ -98,15 +98,19 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
                    juce::Justification::centred, 1);
 
   g.setColour(juce::Colour::fromRGB(158, 119, 119));
+  
+  static juce::String lastIrFilename = "";
 
   juce::String irFilename = audioProcessor.apvts.state.getProperty("IrFilename", "");
   if (irFilename == "") {
       irFilename = "built-in IR";
   }
+
   irFileLabel.setText(irFilename, juce::dontSendNotification);
   irFileLabel.repaint();
 
-  if (waveformPainted < 9) { // FIXME: find out why boolean doesn't work
+  if (irFilename != lastIrFilename) {
+      lastIrFilename = irFilename;
       const int waveformWidth = 80 * 3;
       const int waveformHeight = 100;
 
@@ -214,34 +218,6 @@ void PianoResAudioProcessorEditor::openButtonClicked() {
   });
 }
 
-void PianoResAudioProcessorEditor::openMemoryIrFile() {
-    // update text of IR file label
-    audioProcessor.apvts.state.setProperty("IrFilename", "", nullptr);
-
-    // BinaryData automatically replaces non-alphanumeric characters (like '.') with underscores
-    const void* rawData = BinaryData::accuratesalamandergrand6_2impulseshort_flac;
-    size_t rawDataSize = BinaryData::accuratesalamandergrand6_2impulseshort_flacSize;
-
-    if (rawData == nullptr || rawDataSize == 0) return;
-
-    // Wrap the raw binary pointer into an input stream
-    auto inputStream = std::make_unique<juce::MemoryInputStream>(rawData, rawDataSize, false);
-
-    // Create a reader from the stream
-    std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(std::move(inputStream)));
-
-    if (reader != nullptr) {
-        audioProcessor.setIRBufferSize(
-            static_cast<int>(reader->numChannels),
-            static_cast<int>(reader->lengthInSamples));
-        reader->read(&audioProcessor.getOriginalIR(), 0,
-            static_cast<int>(reader->lengthInSamples), 0, true, true);
-        audioProcessor.loadImpulseResponse();
-
-        waveformPainted = 0;
-        repaint();
-    }
-}
 
 
 void PianoResAudioProcessorEditor::createSlider(juce::Slider &slider,

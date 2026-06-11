@@ -76,7 +76,6 @@ private:
   void createSlider(juce::Slider &slider, juce::String textValueSuffix);
   void createLabel(juce::Label &label, juce::String text,
                    juce::Component *slider);
-  void openMemoryIrFile();
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PianoResAudioProcessorEditor)
 };

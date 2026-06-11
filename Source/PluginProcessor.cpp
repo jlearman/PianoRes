@@ -29,6 +29,7 @@ PianoResAudioProcessor::PianoResAudioProcessor()
 #endif
 {
     apvts.state.setProperty("irFilename", "-", nullptr);
+    formatManager.registerBasicFormats();
 }
 
 PianoResAudioProcessor::~PianoResAudioProcessor() {}
@@ -369,4 +370,33 @@ PianoResAudioProcessor::createParameters() {
 // This creates new instances of the plugin..
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {
   return new PianoResAudioProcessor();
+}
+
+void PianoResAudioProcessor::openMemoryIrFile() {
+    // update text of IR file label
+    apvts.state.setProperty("IrFilename", "", nullptr);
+
+    // BinaryData automatically replaces non-alphanumeric characters (like '.') with underscores
+    const void* rawData = BinaryData::accuratesalamandergrand6_2impulseshort_flac;
+    size_t rawDataSize = BinaryData::accuratesalamandergrand6_2impulseshort_flacSize;
+
+    if (rawData == nullptr || rawDataSize == 0) return;
+
+    // Wrap the raw binary pointer into an input stream
+    auto inputStream = std::make_unique<juce::MemoryInputStream>(rawData, rawDataSize, false);
+
+    // Create a reader from the stream
+    std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(std::move(inputStream)));
+
+    if (reader != nullptr) {
+        setIRBufferSize(
+            static_cast<int>(reader->numChannels),
+            static_cast<int>(reader->lengthInSamples));
+        reader->read(&getOriginalIR(), 0,
+            static_cast<int>(reader->lengthInSamples), 0, true, true);
+        loadImpulseResponse();
+
+        // waveformPainted = 0;
+        // repaint();
+    }
 }
