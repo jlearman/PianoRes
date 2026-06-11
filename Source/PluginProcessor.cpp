@@ -28,8 +28,12 @@ PianoResAudioProcessor::PianoResAudioProcessor()
           44100, 20000.0f, 1.0f, 0.7f))
 #endif
 {
-    apvts.state.setProperty("irFilename", "", nullptr);
+    DBG("======== AudioProcessor: Setting IrFilename empty");
+    apvts.state.setProperty("IrFilename", "", nullptr);
     formatManager.registerBasicFormats();
+
+    DBG("PluginEditor: openMemoryIrFile");
+    openMemoryIrFile(false);
 }
 
 PianoResAudioProcessor::~PianoResAudioProcessor() {}
@@ -103,6 +107,7 @@ void PianoResAudioProcessor::prepareToPlay(double sampleRate,
   outputGainer.reset();
   convolver.prepare(spec);
   convolver.reset();
+  updateImpulseResponse(originalIRBuffer);
 
   lowShelfFilter.prepare(spec);
   lowShelfFilter.reset();
@@ -248,6 +253,8 @@ void PianoResAudioProcessor::getStateInformation(juce::MemoryBlock& destData) {
     auto state = apvts.copyState();
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
     copyXmlToBinary(*xml, destData);
+    DBG("======== getStateInformation: '" << state.getProperty("IrFilename").toString() << "'");
+
 }
 
 void PianoResAudioProcessor::setStateInformation(const void *data, int sizeInBytes) {
@@ -258,7 +265,15 @@ void PianoResAudioProcessor::setStateInformation(const void *data, int sizeInByt
             apvts.replaceState(tree);
         }
     }
-    // loadImpulseResponse();
+	juce::String irFilename = apvts.state.getProperty("IrFilename", "").toString();
+    DBG("======== setStateInformation: '" << irFilename << "'");
+    if (irFilename.isEmpty()) {
+        DBG("======== opening memory file");
+        openMemoryIrFile(true);
+    } else {
+        DBG("======== opening filesystem file");
+		readIrFile(irFilename);
+	}
 }
 
 void PianoResAudioProcessor::setIRBufferSize(int newNumChannels,
@@ -278,13 +293,15 @@ juce::AudioBuffer<float> &PianoResAudioProcessor::getModifiedIR() {
   return modifiedIRBuffer;
 }
 
-void PianoResAudioProcessor::loadImpulseResponse() {
+void PianoResAudioProcessor::loadImpulseResponse(bool setupConvolution) {
   // normalized IR signal
   float globalMaxMagnitude =
       originalIRBuffer.getMagnitude(0, originalIRBuffer.getNumSamples());
   originalIRBuffer.applyGain(1.0f / (globalMaxMagnitude + 0.01f));
 
-  updateImpulseResponse(originalIRBuffer);
+  if (setupConvolution) {
+      updateImpulseResponse(originalIRBuffer);
+  }
 }
 
 void PianoResAudioProcessor::updateImpulseResponse(
@@ -372,8 +389,9 @@ juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {
   return new PianoResAudioProcessor();
 }
 
-void PianoResAudioProcessor::openMemoryIrFile() {
+void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
     // update text of IR file label
+    DBG("======== openMemoryIrFile setting IrFilename to null");
     apvts.state.setProperty("IrFilename", "", nullptr);
 
     // BinaryData automatically replaces non-alphanumeric characters (like '.') with underscores
@@ -394,7 +412,7 @@ void PianoResAudioProcessor::openMemoryIrFile() {
             static_cast<int>(reader->lengthInSamples));
         reader->read(&getOriginalIR(), 0,
             static_cast<int>(reader->lengthInSamples), 0, true, true);
-        loadImpulseResponse();
+        loadImpulseResponse(setupConvolution);
     }
 }
 
@@ -407,6 +425,6 @@ void PianoResAudioProcessor::readIrFile(juce::String irFilename) {
             static_cast<int>(reader->lengthInSamples));
         reader->read(&getOriginalIR(), 0,
             static_cast<int>(reader->lengthInSamples), 0, true, true);
-        loadImpulseResponse();
+        loadImpulseResponse(true);
     }
 }

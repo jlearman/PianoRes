@@ -77,7 +77,6 @@ PianoResAudioProcessorEditor::PianoResAudioProcessorEditor(PianoResAudioProcesso
   highShelfGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
       audioProcessor.apvts, "HighShelfGain", highShelfGainSlider);
 
-  audioProcessor.openMemoryIrFile();
 }
 
 PianoResAudioProcessorEditor::~PianoResAudioProcessorEditor() {
@@ -107,10 +106,9 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
   }
 
   irFileLabel.setText(irFilename, juce::dontSendNotification);
-  irFileLabel.repaint();
+  DBG("======== Set label to '" << irFilename << "'");
 
-  if (irFilename != lastIrFilename) {
-      lastIrFilename = irFilename;
+  if (true || irFilename != lastIrFilename) {
       const int waveformWidth = 80 * 3;
       const int waveformHeight = 100;
 
@@ -119,6 +117,10 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
       waveformPath.startNewSubPath(15, waveformHeight + 60);
 
       auto buffer = audioProcessor.getOriginalIR();
+      if (buffer.getNumChannels() < 1) {
+          DBG("======== paint(): no channels");
+          return;
+      }
       const float waveformResolution = 1024.0f;
       const int ratio =
           static_cast<int>(buffer.getNumSamples() / waveformResolution);
@@ -137,7 +139,9 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
       g.strokePath(waveformPath, juce::PathStrokeType(1.0f));
 
       waveformPainted++;
-      DBG("painted waveform: '" << irFilename << "'");
+      // DBG("painted waveform: '" << irFilename << "', '" << lastIrFilename << "'");
+      DBG("painted waveform: '" << irFilename << " " << buffer.getNumSamples());
+      lastIrFilename = irFilename;
   }
 }
 
@@ -200,7 +204,8 @@ void PianoResAudioProcessorEditor::openButtonClicked() {
     auto file = fc.getResult();
     if (file != juce::File()) {
       // update text of IR file label
-      audioProcessor.apvts.state.setProperty("IrFilename", file.getFileName(), nullptr);
+      audioProcessor.apvts.state.setProperty("IrFilename", file.getFullPathName(), nullptr);
+      DBG("======== OpenButtonClicked: '" << audioProcessor.apvts.state.getProperty("IrFilename").toString());
 	  // load IR file and update IR buffer in processor
       audioProcessor.readIrFile(file.getFullPathName().toStdString());
       void readIrFile(juce::String irFilename);

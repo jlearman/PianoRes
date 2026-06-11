@@ -60,9 +60,9 @@ public:
   juce::AudioBuffer<float> &getOriginalIR();
   juce::AudioBuffer<float> &getModifiedIR();
 
-  void loadImpulseResponse();
+  void loadImpulseResponse(bool setupConvolution);
   void updateImpulseResponse(juce::AudioBuffer<float> irBuffer);
-  void openMemoryIrFile();
+  void openMemoryIrFile(bool setupConvolution);
   void readIrFile(juce::String irFilename);
 
   void updateIRParameters();
