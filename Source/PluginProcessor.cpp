@@ -242,17 +242,23 @@ juce::AudioProcessorEditor *PianoResAudioProcessor::createEditor() {
 }
 
 //==============================================================================
-void PianoResAudioProcessor::getStateInformation(juce::MemoryBlock &/*destData*/) {
-  // You should use this method to store your parameters in the memory block.
-  // You could do that either as raw data, or use the XML or ValueTree classes
-  // as intermediaries to make it easy to save and load complex data.
+void PianoResAudioProcessor::getStateInformation(juce::MemoryBlock& destData) {
+    auto state = apvts.copyState();
+    // state.setProperty("irFilename", irFilename);
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
-void PianoResAudioProcessor::setStateInformation(const void */*data*/,
-                                               int /*sizeInBytes*/) {
-  // You should use this method to restore your parameters from this memory
-  // block, whose contents will have been created by the getStateInformation()
-  // call.
+void PianoResAudioProcessor::setStateInformation(const void *data, int sizeInBytes) {
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+    if (xmlState.get() != nullptr) {
+        if (xmlState->hasTagName(apvts.state.getType())) {
+            juce::ValueTree tree = juce::ValueTree::fromXml(*xmlState);
+            apvts.replaceState(tree);
+            // irFilename = tree.getProperty("irFilename", juce::String()).toString();
+        }
+    }
+    // loadImpulseResponse();
 }
 
 void PianoResAudioProcessor::setIRBufferSize(int newNumChannels,
