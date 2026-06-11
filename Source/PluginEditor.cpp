@@ -6,6 +6,7 @@
   ==============================================================================
 */
 
+#include <filesystem>
 #include "PluginEditor.h"
 #include "PluginProcessor.h"
 
@@ -105,8 +106,10 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
       irFilename = "built-in IR";
   }
 
-  irFileLabel.setText(irFilename, juce::dontSendNotification);
-  DBG("======== Set label to '" << irFilename << "'");
+  // remove path from filename for display
+  std::filesystem::path irPath(irFilename.toStdString());
+  irFileLabel.setText(irPath.filename().string(), juce::dontSendNotification);
+  DBG("======== Set label to '" << irPath.filename().string() << "'");
 
   if (true || irFilename != lastIrFilename) {
       const int waveformWidth = 80 * 3;
