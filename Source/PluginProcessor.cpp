@@ -28,6 +28,7 @@ PianoResAudioProcessor::PianoResAudioProcessor()
           44100, 20000.0f, 1.0f, 0.7f))
 #endif
 {
+    apvts.state.setProperty("irFilename", "-", nullptr);
 }
 
 PianoResAudioProcessor::~PianoResAudioProcessor() {}
@@ -244,7 +245,6 @@ juce::AudioProcessorEditor *PianoResAudioProcessor::createEditor() {
 //==============================================================================
 void PianoResAudioProcessor::getStateInformation(juce::MemoryBlock& destData) {
     auto state = apvts.copyState();
-    // state.setProperty("irFilename", irFilename);
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
     copyXmlToBinary(*xml, destData);
 }
@@ -255,7 +255,6 @@ void PianoResAudioProcessor::setStateInformation(const void *data, int sizeInByt
         if (xmlState->hasTagName(apvts.state.getType())) {
             juce::ValueTree tree = juce::ValueTree::fromXml(*xmlState);
             apvts.replaceState(tree);
-            // irFilename = tree.getProperty("irFilename", juce::String()).toString();
         }
     }
     // loadImpulseResponse();

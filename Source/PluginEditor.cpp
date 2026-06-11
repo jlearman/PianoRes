@@ -99,7 +99,14 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
 
   g.setColour(juce::Colour::fromRGB(158, 119, 119));
 
-  if (waveformPainted < 2) { // FIXME: find out why boolean doesn't work
+  juce::String irFilename = audioProcessor.apvts.state.getProperty("IrFilename", "");
+  if (irFilename == "") {
+      irFilename = "built-in IR";
+  }
+  irFileLabel.setText(irFilename, juce::dontSendNotification);
+  irFileLabel.repaint();
+
+  if (waveformPainted < 9) { // FIXME: find out why boolean doesn't work
       const int waveformWidth = 80 * 3;
       const int waveformHeight = 100;
 
@@ -189,8 +196,7 @@ void PianoResAudioProcessorEditor::openButtonClicked() {
     auto file = fc.getResult();
     if (file != juce::File()) {
       // update text of IR file label
-      irFileLabel.setText(file.getFileName(), juce::dontSendNotification);
-      irFileLabel.repaint();
+      audioProcessor.apvts.state.setProperty("IrFilename", file.getFileName(), nullptr);
 
       std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
       if (reader != nullptr) {
@@ -210,8 +216,7 @@ void PianoResAudioProcessorEditor::openButtonClicked() {
 
 void PianoResAudioProcessorEditor::openMemoryIrFile() {
     // update text of IR file label
-    irFileLabel.setText("built-in impulse response", juce::dontSendNotification);
-    irFileLabel.repaint();
+    audioProcessor.apvts.state.setProperty("IrFilename", "", nullptr);
 
     // BinaryData automatically replaces non-alphanumeric characters (like '.') with underscores
     const void* rawData = BinaryData::accuratesalamandergrand6_2impulseshort_flac;
