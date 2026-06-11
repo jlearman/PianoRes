@@ -133,7 +133,7 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
       g.strokePath(waveformPath, juce::PathStrokeType(1.0f));
 
       waveformPainted++;
-      DBG("painted waveform " << buffer.getNumSamples());
+      DBG("painted waveform: '" << irFilename << "'");
   }
 }
 
