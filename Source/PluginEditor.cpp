@@ -86,11 +86,6 @@ PianoResAudioProcessorEditor::~PianoResAudioProcessorEditor() {
 
 //==============================================================================
 void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
-  // (Our component is opaque, so we must completely fill the background with a
-  // solid colour)
-
-  // g.fillAll(
-  //     getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
   g.fillAll(juce::Colour::fromRGB(252, 248, 237));
   g.setFont(32.0f);
   g.setColour(juce::Colour::fromRGB(111, 76, 91));
@@ -120,10 +115,6 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
       waveformPath.startNewSubPath(15, waveformHeight + 60);
 
       auto buffer = audioProcessor.getOriginalIR();
-      if (buffer.getNumChannels() < 1) {
-          DBG("======== paint(): no channels");
-          return;
-      }
       const float waveformResolution = 1024.0f;
       const int ratio =
           static_cast<int>(buffer.getNumSamples() / waveformResolution);
@@ -140,6 +131,7 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
       }
 
       g.strokePath(waveformPath, juce::PathStrokeType(1.0f));
+      DBG("======== waveform path: " << waveformPath.getLength());
 
       waveformPainted++;
       // DBG("painted waveform: '" << irFilename << "', '" << lastIrFilename << "'");
