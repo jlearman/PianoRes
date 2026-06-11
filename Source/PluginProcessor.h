@@ -63,6 +63,7 @@ public:
   void loadImpulseResponse();
   void updateImpulseResponse(juce::AudioBuffer<float> irBuffer);
   void openMemoryIrFile();
+  void readIrFile(juce::String irFilename);
 
   void updateIRParameters();
   void updateFilterParameters();

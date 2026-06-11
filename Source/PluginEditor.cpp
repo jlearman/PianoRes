@@ -201,24 +201,12 @@ void PianoResAudioProcessorEditor::openButtonClicked() {
     if (file != juce::File()) {
       // update text of IR file label
       audioProcessor.apvts.state.setProperty("IrFilename", file.getFileName(), nullptr);
-
-      std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
-      if (reader != nullptr) {
-        audioProcessor.setIRBufferSize(
-            static_cast<int>(reader->numChannels),
-            static_cast<int>(reader->lengthInSamples));
-        reader->read(&audioProcessor.getOriginalIR(), 0,
-                     static_cast<int>(reader->lengthInSamples), 0, true, true);
-        audioProcessor.loadImpulseResponse();
-
-        waveformPainted = 0;
-        repaint();
-      }
+	  // load IR file and update IR buffer in processor
+      audioProcessor.readIrFile(file.getFullPathName().toStdString());
+      void readIrFile(juce::String irFilename);
     }
   });
 }
-
-
 
 void PianoResAudioProcessorEditor::createSlider(juce::Slider &slider,
                                               juce::String textValueSuffix) {

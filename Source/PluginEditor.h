@@ -35,7 +35,6 @@ private:
 
   juce::AudioFormatManager formatManager;
   std::unique_ptr<juce::FileChooser> fileChooser;
-  juce::AudioBuffer<float> embeddedIrBuffer; // for default IR file
 
   std::vector<float> waveformValues;
   int waveformPainted = 0; // FIXME: find out why boolean doesn't work

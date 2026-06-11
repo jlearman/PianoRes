@@ -28,7 +28,7 @@ PianoResAudioProcessor::PianoResAudioProcessor()
           44100, 20000.0f, 1.0f, 0.7f))
 #endif
 {
-    apvts.state.setProperty("irFilename", "-", nullptr);
+    apvts.state.setProperty("irFilename", "", nullptr);
     formatManager.registerBasicFormats();
 }
 
@@ -395,8 +395,18 @@ void PianoResAudioProcessor::openMemoryIrFile() {
         reader->read(&getOriginalIR(), 0,
             static_cast<int>(reader->lengthInSamples), 0, true, true);
         loadImpulseResponse();
+    }
+}
 
-        // waveformPainted = 0;
-        // repaint();
+void PianoResAudioProcessor::readIrFile(juce::String irFilename) {
+    juce::File file(irFilename);
+    std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
+    if (reader != nullptr) {
+        setIRBufferSize(
+            static_cast<int>(reader->numChannels),
+            static_cast<int>(reader->lengthInSamples));
+        reader->read(&getOriginalIR(), 0,
+            static_cast<int>(reader->lengthInSamples), 0, true, true);
+        loadImpulseResponse();
     }
 }
