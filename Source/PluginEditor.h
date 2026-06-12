@@ -36,7 +36,6 @@ private:
   juce::AudioFormatManager formatManager;
   std::unique_ptr<juce::FileChooser> fileChooser;
 
-  std::vector<float> waveformValues;
   int waveformPainted = 0; // FIXME: find out why boolean doesn't work
 
   juce::TextButton openIRFileButton;

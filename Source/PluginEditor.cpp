@@ -84,6 +84,11 @@ PianoResAudioProcessorEditor::~PianoResAudioProcessorEditor() {
   juce::LookAndFeel::setDefaultLookAndFeel(nullptr);
 }
 
+bool draw = true;
+void noDraw() {
+    draw = false;
+}
+
 //==============================================================================
 void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
   g.fillAll(juce::Colour::fromRGB(252, 248, 237));
@@ -106,12 +111,15 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
   irFileLabel.setText(irPath.filename().string(), juce::dontSendNotification);
   DBG("======== Set label to '" << irPath.filename().string() << "'");
 
-  if (true || irFilename != lastIrFilename) {
+  if (draw || irFilename != lastIrFilename) {
       const int waveformWidth = 80 * 3;
       const int waveformHeight = 100;
 
-      juce::Path waveformPath;
+      std::vector<float> waveformValues;
       waveformValues.clear();
+
+      juce::Path waveformPath;
+      waveformPath.clear();
       waveformPath.startNewSubPath(15, waveformHeight + 60);
 
       auto buffer = audioProcessor.getOriginalIR();
