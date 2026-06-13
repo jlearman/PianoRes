@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    This file contains the basic framework code for a JUCE plugin processor.
+	This file contains the basic framework code for a JUCE plugin processor.
 
   ==============================================================================
 */
@@ -14,88 +14,88 @@
 /**
  */
 class PianoResAudioProcessor : public juce::AudioProcessor,
-                               public juce::ChangeBroadcaster {
+	public juce::ChangeBroadcaster {
 public:
-  using APVTS = juce::AudioProcessorValueTreeState;
-  //==============================================================================
-  PianoResAudioProcessor();
-  ~PianoResAudioProcessor() override;
+	using APVTS = juce::AudioProcessorValueTreeState;
+	//==============================================================================
+	PianoResAudioProcessor();
+	~PianoResAudioProcessor() override;
 
-  //==============================================================================
-  void prepareToPlay(double sampleRate, int samplesPerBlock) override;
-  void releaseResources() override;
+	//==============================================================================
+	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
+	void releaseResources() override;
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-  bool isBusesLayoutSupported(const BusesLayout &layouts) const override;
+	bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
 #endif
 
-  void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &) override;
+	void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
-  //==============================================================================
-  juce::AudioProcessorEditor *createEditor() override;
-  bool hasEditor() const override;
+	//==============================================================================
+	juce::AudioProcessorEditor* createEditor() override;
+	bool hasEditor() const override;
 
-  //==============================================================================
-  const juce::String getName() const override;
+	//==============================================================================
+	const juce::String getName() const override;
 
-  bool acceptsMidi() const override;
-  bool producesMidi() const override;
-  bool isMidiEffect() const override;
-  double getTailLengthSeconds() const override;
+	bool acceptsMidi() const override;
+	bool producesMidi() const override;
+	bool isMidiEffect() const override;
+	double getTailLengthSeconds() const override;
 
-  //==============================================================================
-  int getNumPrograms() override;
-  int getCurrentProgram() override;
-  void setCurrentProgram(int index) override;
-  const juce::String getProgramName(int index) override;
-  void changeProgramName(int index, const juce::String &newName) override;
+	//==============================================================================
+	int getNumPrograms() override;
+	int getCurrentProgram() override;
+	void setCurrentProgram(int index) override;
+	const juce::String getProgramName(int index) override;
+	void changeProgramName(int index, const juce::String& newName) override;
 
-  //==============================================================================
-  void getStateInformation(juce::MemoryBlock &destData) override;
-  void setStateInformation(const void *data, int sizeInBytes) override;
+	//==============================================================================
+	void getStateInformation(juce::MemoryBlock& destData) override;
+	void setStateInformation(const void* data, int sizeInBytes) override;
 
-  void setIRBufferSize(int newNumChannels, int newNumSamples,
-                       bool keepExistingContent = false,
-                       bool clearExtraSpace = false,
-                       bool avoidReallocating = false);
-  juce::AudioBuffer<float> &getOriginalIR();
-  juce::AudioBuffer<float> &getModifiedIR();
+	void setIRBufferSize(int newNumChannels, int newNumSamples,
+		bool keepExistingContent = false,
+		bool clearExtraSpace = false,
+		bool avoidReallocating = false);
+	juce::AudioBuffer<float>& getOriginalIR();
+	juce::AudioBuffer<float>& getModifiedIR();
 
-  void loadImpulseResponse(bool setupConvolution);
-  void updateImpulseResponse(juce::AudioBuffer<float> irBuffer);
-  void openMemoryIrFile(bool setupConvolution);
-  void readIrFile(juce::String irFilename);
+	void loadImpulseResponse(bool setupConvolution);
+	void updateImpulseResponse(juce::AudioBuffer<float> irBuffer);
+	void openMemoryIrFile(bool setupConvolution);
+	void readIrFile(juce::String irFilename);
 
-  void updateIRParameters();
-  void updateFilterParameters();
+	void updateIRParameters();
+	void updateFilterParameters();
 
-  APVTS apvts;
+	APVTS apvts;
 
-  juce::AudioFormatManager formatManager;
+	juce::AudioFormatManager formatManager;
 
 private:
-  juce::AudioBuffer<float> originalIRBuffer;
-  juce::AudioBuffer<float> modifiedIRBuffer;
+	juce::AudioBuffer<float> originalIRBuffer;
+	juce::AudioBuffer<float> modifiedIRBuffer;
 
-  // Use an ADSR to control sustain release
-  juce::ADSR adsr;
-  juce::ADSR::Parameters adsrParams;
+	// Use an ADSR to control sustain release
+	juce::ADSR adsr;
+	juce::ADSR::Parameters adsrParams;
 
-  APVTS::ParameterLayout createParameters();
+	APVTS::ParameterLayout createParameters();
 
-  juce::dsp::Gain<float> inputGainer;
-  juce::dsp::Gain<float> dryGainer;
-  juce::dsp::Gain<float> wetGainer;
-  juce::dsp::Gain<float> outputGainer;
-  juce::dsp::Convolution convolver{ juce::dsp::Convolution::NonUniform { 1024 } };
-  juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,
-                                 juce::dsp::IIR::Coefficients<float>>
-      lowShelfFilter;
-  juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,
-                                 juce::dsp::IIR::Coefficients<float>>
-      highShelfFilter;
-  juce::AudioBuffer<float> dryBufferCopy; // for mixing wet and dry with different gains
+	juce::dsp::Gain<float> inputGainer;
+	juce::dsp::Gain<float> dryGainer;
+	juce::dsp::Gain<float> wetGainer;
+	juce::dsp::Gain<float> outputGainer;
+	juce::dsp::Convolution convolver{ juce::dsp::Convolution::NonUniform { 1024 } };
+	juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,
+		juce::dsp::IIR::Coefficients<float>>
+		lowShelfFilter;
+	juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>,
+		juce::dsp::IIR::Coefficients<float>>
+		highShelfFilter;
+	juce::AudioBuffer<float> dryBufferCopy; // for mixing wet and dry with different gains
 
-  //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PianoResAudioProcessor)
+	//==============================================================================
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PianoResAudioProcessor)
 };
