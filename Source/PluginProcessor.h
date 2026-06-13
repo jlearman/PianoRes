@@ -13,7 +13,8 @@
 //==============================================================================
 /**
  */
-class PianoResAudioProcessor : public juce::AudioProcessor {
+class PianoResAudioProcessor : public juce::AudioProcessor,
+                               public juce::ChangeBroadcaster {
 public:
   using APVTS = juce::AudioProcessorValueTreeState;
   //==============================================================================
@@ -70,11 +71,11 @@ public:
 
   APVTS apvts;
 
+  juce::AudioFormatManager formatManager;
+
 private:
   juce::AudioBuffer<float> originalIRBuffer;
   juce::AudioBuffer<float> modifiedIRBuffer;
-
-  juce::AudioFormatManager formatManager;
 
   // Use an ADSR to control sustain release
   juce::ADSR adsr;

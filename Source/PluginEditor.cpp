@@ -13,6 +13,9 @@
 //==============================================================================
 PianoResAudioProcessorEditor::PianoResAudioProcessorEditor(PianoResAudioProcessor &p)
     : AudioProcessorEditor(&p), audioProcessor(p) {
+
+  audioProcessor.addChangeListener(this);
+
   // Make sure that before the constructor has finished, you've set the
   // editor's size to whatever you need it to be.
   setSize(750, 300);
@@ -81,12 +84,8 @@ PianoResAudioProcessorEditor::PianoResAudioProcessorEditor(PianoResAudioProcesso
 }
 
 PianoResAudioProcessorEditor::~PianoResAudioProcessorEditor() {
+  audioProcessor.removeChangeListener(this);
   juce::LookAndFeel::setDefaultLookAndFeel(nullptr);
-}
-
-bool draw = true;
-void noDraw() {
-    draw = false;
 }
 
 //==============================================================================
@@ -99,21 +98,22 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
 
   g.setColour(juce::Colour::fromRGB(158, 119, 119));
   
-  static juce::String lastIrFilename = "";
+  static juce::String lastIrFilename = "--none--";
 
   juce::String irFilename = audioProcessor.apvts.state.getProperty("IrFilename", "");
   if (irFilename == "") {
       irFilename = "built-in IR";
   }
 
-  // remove path from filename for display
-  std::filesystem::path irPath(irFilename.toStdString());
-  irFileLabel.setText(irPath.filename().string(), juce::dontSendNotification);
-  DBG("======== Set label to '" << irPath.filename().string() << "'");
+  static int drawCount = 1; // FIXME: why do we need to draw 3 times at startup?
 
-  if (draw || irFilename != lastIrFilename) {
+  if (drawCount <= 3 || irFilename != lastIrFilename) {
       const int waveformWidth = 80 * 3;
       const int waveformHeight = 100;
+
+      // remove path from filename for display
+      std::filesystem::path irPath(irFilename.toStdString());
+      irFileLabel.setText(irPath.filename().string(), juce::dontSendNotification);
 
       std::vector<float> waveformValues;
       waveformValues.clear();
@@ -127,6 +127,8 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
       const int ratio =
           static_cast<int>(buffer.getNumSamples() / waveformResolution);
 
+      if (buffer.getNumChannels() == 0)  return;
+
       auto bufferPointer = buffer.getReadPointer(0);
       for (int sample = 0; sample < buffer.getNumSamples(); sample += ratio) {
           waveformValues.push_back(juce::Decibels::gainToDecibels<float>(
@@ -139,11 +141,13 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics &g) {
       }
 
       g.strokePath(waveformPath, juce::PathStrokeType(1.0f));
-      DBG("======== waveform path: " << waveformPath.getLength());
 
       waveformPainted++;
+      if (irFilename != lastIrFilename) {
+          drawCount = 1;
+      }
       // DBG("painted waveform: '" << irFilename << "', '" << lastIrFilename << "'");
-      DBG("painted waveform: '" << irFilename << " " << buffer.getNumSamples());
+      DBG("======== painted waveform: '" << irFilename << " " << buffer.getNumSamples() << " " << drawCount++);
       lastIrFilename = irFilename;
   }
 }
@@ -208,10 +212,9 @@ void PianoResAudioProcessorEditor::openButtonClicked() {
     if (file != juce::File()) {
       // update text of IR file label
       audioProcessor.apvts.state.setProperty("IrFilename", file.getFullPathName(), nullptr);
-      DBG("======== OpenButtonClicked: '" << audioProcessor.apvts.state.getProperty("IrFilename").toString());
 	  // load IR file and update IR buffer in processor
       audioProcessor.readIrFile(file.getFullPathName().toStdString());
-      void readIrFile(juce::String irFilename);
+      repaint();
     }
   });
 }
@@ -234,4 +237,11 @@ void PianoResAudioProcessorEditor::createLabel(juce::Label &label,
   label.setJustificationType(juce::Justification::centred);
   label.setBorderSize(juce::BorderSize<int>(0));
   label.attachToComponent(slider, false);
+}
+
+void PianoResAudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+    if (source == &audioProcessor) {
+        repaint(); // Safely called on the UI message thread
+    }
 }

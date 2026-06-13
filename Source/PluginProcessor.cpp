@@ -11,28 +11,20 @@
 
 //==============================================================================
 PianoResAudioProcessor::PianoResAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
     : AudioProcessor(
-          BusesProperties()
-#if !JucePlugin_IsMidiEffect
-#if !JucePlugin_IsSynth
-              .withInput("Input", juce::AudioChannelSet::stereo(), true)
-#endif
-              .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-#endif
-              ),
-      apvts(*this, nullptr, "Parameters", createParameters()),
-      lowShelfFilter(juce::dsp::IIR::Coefficients<float>::makeLowShelf(
-          44100, 20.0f, 1.0f, 0.7f)),
-      highShelfFilter(juce::dsp::IIR::Coefficients<float>::makeHighShelf(
-          44100, 20000.0f, 1.0f, 0.7f))
-#endif
+        BusesProperties()
+        .withInput("Input", juce::AudioChannelSet::stereo(), true)
+        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+    ),
+    apvts(*this, nullptr, "Parameters", createParameters()),
+    lowShelfFilter(juce::dsp::IIR::Coefficients<float>::makeLowShelf(
+        44100, 20.0f, 1.0f, 0.7f)),
+    highShelfFilter(juce::dsp::IIR::Coefficients<float>::makeHighShelf(
+        44100, 20000.0f, 1.0f, 0.7f))
 {
-    DBG("======== AudioProcessor: Setting IrFilename empty");
     apvts.state.setProperty("IrFilename", "", nullptr);
     formatManager.registerBasicFormats();
 
-    DBG("PluginEditor: openMemoryIrFile");
     openMemoryIrFile(false);
 }
 
@@ -253,8 +245,6 @@ void PianoResAudioProcessor::getStateInformation(juce::MemoryBlock& destData) {
     auto state = apvts.copyState();
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
     copyXmlToBinary(*xml, destData);
-    DBG("======== getStateInformation: '" << state.getProperty("IrFilename").toString() << "'");
-
 }
 
 void PianoResAudioProcessor::setStateInformation(const void *data, int sizeInBytes) {
@@ -266,12 +256,9 @@ void PianoResAudioProcessor::setStateInformation(const void *data, int sizeInByt
         }
     }
 	juce::String irFilename = apvts.state.getProperty("IrFilename", "").toString();
-    DBG("======== setStateInformation: '" << irFilename << "'");
     if (irFilename.isEmpty()) {
-        DBG("======== opening memory file");
         openMemoryIrFile(true);
     } else {
-        DBG("======== opening filesystem file");
 		readIrFile(irFilename);
 	}
 }
@@ -391,7 +378,6 @@ juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {
 
 void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
     // update text of IR file label
-    DBG("======== openMemoryIrFile setting IrFilename to null");
     apvts.state.setProperty("IrFilename", "", nullptr);
 
     // BinaryData automatically replaces non-alphanumeric characters (like '.') with underscores
@@ -413,11 +399,13 @@ void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
         reader->read(&getOriginalIR(), 0,
             static_cast<int>(reader->lengthInSamples), 0, true, true);
         loadImpulseResponse(setupConvolution);
+        sendChangeMessage();
     }
 }
 
 void PianoResAudioProcessor::readIrFile(juce::String irFilename) {
     juce::File file(irFilename);
+
     std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
     if (reader != nullptr) {
         setIRBufferSize(
@@ -426,5 +414,7 @@ void PianoResAudioProcessor::readIrFile(juce::String irFilename) {
         reader->read(&getOriginalIR(), 0,
             static_cast<int>(reader->lengthInSamples), 0, true, true);
         loadImpulseResponse(true);
+        sendChangeMessage();
     }
 }
+

@@ -15,7 +15,8 @@
 //==============================================================================
 /**
  */
-class PianoResAudioProcessorEditor : public juce::AudioProcessorEditor {
+class PianoResAudioProcessorEditor : public juce::AudioProcessorEditor,
+                                     public juce::ChangeListener {
 public:
   using APVTS = juce::AudioProcessorValueTreeState;
 
@@ -30,6 +31,8 @@ private:
   // This reference is provided as a quick way for your editor to
   // access the processor object that created it.
   PianoResAudioProcessor &audioProcessor;
+
+  void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
   juce::CustomStyle customStyle;
 
