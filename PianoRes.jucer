@@ -8,7 +8,7 @@
               displaySplashScreen="1" splashScreenColour="Light" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
               pluginName="PianoRes" pluginDesc="Piano Resonance for sampled pianos"
               pluginManufacturer="jlearman" companyCopyright="CC0" companyEmail="jjlearman@gmail.com"
-              version="0.2.0" lv2Uri="urn:jlearman:PianoRes" defines="JUCE_NAMESPACE_ROOT=1, fabsf=::fabsf">
+              version="0.2.0" lv2Uri="urn:jlearman:PianoRes">
   <MAINGROUP id="e9u98w" name="PianoRes">
     <GROUP id="{5FC00DE4-C31C-C498-1696-863668371BCC}" name="Source">
       <FILE id="ALO6Je" name="Spartan-Medium.ttf" compile="0" resource="1"
