@@ -132,7 +132,7 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics& g) {
 		auto bufferPointer = buffer.getReadPointer(0);
 		for (int sample = 0; sample < buffer.getNumSamples(); sample += ratio) {
 			waveformValues.push_back(juce::Decibels::gainToDecibels<float>(
-				std::fabsf(bufferPointer[sample]), -72.0f));
+				std::abs(bufferPointer[sample]), -72.0f));
 		}
 		for (int xPos = 0; xPos < waveformValues.size(); ++xPos) {
 			auto yPos = juce::jmap<float>(waveformValues[xPos], -72.0f, 0.0f,
