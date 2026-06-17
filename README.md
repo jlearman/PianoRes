@@ -89,8 +89,9 @@ output going to the mixer.
 
 On other platforms, it's possible to load the IR file, to use one based on your
 sampled piano.  Zynthian doesn't provide access to the file chooser, so it's
-not possible the normal way.  However, there may be a workaround.  Open an
-issue if you want this feature.
+not possible the normal way.  Copy the desired IR file to
+`/zynthian/zynthian-my-data/files/IRs/PianoResIR.flac`
+All instances of PianoRes will use this IR file.
 
 ## Controls
 
