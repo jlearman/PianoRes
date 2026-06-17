@@ -8,11 +8,13 @@ or live hosts.
 
 Built using the JUCE framework, PianoRes is compatible with various plugin
 formats, including LV2, VST, VST3, and AU, on various platforms.
-(Currently, only VST3 on Windows.  Open an issue for what you want!)
+
+It is currently available for Windows 64 bit (VST3) and Zynthian
+(Debian Bookworm on ARM, as an LV2 plugin.)
 
 ## Installation
 
-Get the plug, example IR files, and README by clicking the Release
+Get the plugin, example IR files, and README by clicking the Release
 link at the right of the github Code page.  These are in a zip file.
 Follow the instructions in the README file.
 
@@ -41,7 +43,7 @@ damper resonance samples and you can't easily disable them, you can still
 use PianoRes. [Note: editing the sfz file you can remove the resonance
 sample groups.]
 
-### Getting SFZ to pass MIDI
+### Windows: Getting Plogue Sforzando to pass MIDI
 
 This works only with the VST (not VST3) version of Sforzando.  It might
 also work for LV2, but I haven't tried it.
@@ -53,7 +55,7 @@ In Sforzando GUI, choose the SETTINGS tab, and set MIDI to "Process."
 Then you can simply plug PianoRes following Sforzando, and ignore
 the alternatives below.
 
-### Usage in Reaper
+### Windows: Usage in Reaper, without Sforzando trick above
 
 1. Add a track and plug in your sample player configured with your sampleset (e.g.,
     Sforzando with Accurate Salamander Grand 6.2beta2.)
@@ -65,6 +67,30 @@ the alternatives below.
 5. Control the amount of resonance using the PianoRes track's volume slider
 6. To hear the effect only, click the piano track's ROUTE button and uncheck
    "Master Send"
+
+### Zynthian
+
+PianoRes has been tested on RPi5 only.  Good luck on RPi4.
+
+#### Zynthian Audio buffering
+
+Set audio buffer size to 256 samples, with 3 buffers.  Both 44100 Hz and 48000 Hz
+have been tested and work.  YMMV depending on your audio interface.  If you get
+constant overruns/crackling, increase buffering.
+
+#### Zynthian Chain setup
+
+Load the PianoRes plugin as an Audio+MIDI chain.
+Load the piano (Ideally, Salamander Grand, but any piano should be OK) on another
+chain, and set that chain's audio output to the PianoRes chain.  Disable the chain's
+output going to the mixer.
+
+#### Zynthian Limitations
+
+On other platforms, it's possible to load the IR file, to use one based on your
+sampled piano.  Zynthian doesn't provide access to the file chooser, so it's
+not possible the normal way.  However, there may be a workaround.  Open an
+issue if you want this feature.
 
 ## Controls
 
@@ -101,8 +127,6 @@ needed for Linux/Mac.
 3. Click the VS button to the right of "Selected exporter: Visual Studio 2026".  That opens VS with the project
 4. Build->Build Solution
 5. Hunt down the plugin you want (currently LV2 or VST3) and install it in your system.  On a Mac you might be able to build AU, though you might need to change Jucer options.
-
-Sorry I haven't yet figured out how to do a GitHub release and post the executables (yet).  Stay tuned, but might not be right away.  I do plan to build it for Zynthian too.
 
 ## License
 
