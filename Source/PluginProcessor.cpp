@@ -25,6 +25,17 @@ PianoResAudioProcessor::PianoResAudioProcessor()
 	apvts.state.setProperty("IrFilename", "", nullptr);
 	formatManager.registerBasicFormats();
 
+#ifdef ZYNTHIAN
+	// Zynthian has no UI to load a user IR file, so look for one
+    #if 0
+    	const juce::String zynthianIRPath = "/zynthian/zynthian-my-data/files/IRs/PianoResIR.flac";
+    #else
+		const juce::String zynthianIRPath = "C:/PianoResIR.flac";
+    #endif
+	if (readIrFile(zynthianIRPath)) {
+		return;
+	}
+#endif
 	openMemoryIrFile(false);
 }
 
@@ -392,29 +403,32 @@ void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
 	// Create a reader from the stream
 	std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(std::move(inputStream)));
 
-	if (reader != nullptr) {
-		setIRBufferSize(
-			static_cast<int>(reader->numChannels),
-			static_cast<int>(reader->lengthInSamples));
-		reader->read(&getOriginalIR(), 0,
-			static_cast<int>(reader->lengthInSamples), 0, true, true);
-		loadImpulseResponse(setupConvolution);
-		sendChangeMessage();
+	if (reader == nullptr) {
+		return;
 	}
+	setIRBufferSize(
+		static_cast<int>(reader->numChannels),
+		static_cast<int>(reader->lengthInSamples));
+	reader->read(&getOriginalIR(), 0,
+		static_cast<int>(reader->lengthInSamples), 0, true, true);
+	loadImpulseResponse(setupConvolution);
+	sendChangeMessage();
 }
 
-void PianoResAudioProcessor::readIrFile(juce::String irFilename) {
+bool PianoResAudioProcessor::readIrFile(juce::String irFilename) {
 	juce::File file(irFilename);
 
 	std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
-	if (reader != nullptr) {
-		setIRBufferSize(
-			static_cast<int>(reader->numChannels),
-			static_cast<int>(reader->lengthInSamples));
-		reader->read(&getOriginalIR(), 0,
-			static_cast<int>(reader->lengthInSamples), 0, true, true);
-		loadImpulseResponse(true);
-		sendChangeMessage();
+	if (reader == nullptr) {
+		return false;
 	}
+	setIRBufferSize(
+		static_cast<int>(reader->numChannels),
+		static_cast<int>(reader->lengthInSamples));
+	reader->read(&getOriginalIR(), 0,
+		static_cast<int>(reader->lengthInSamples), 0, true, true);
+	loadImpulseResponse(true);
+	sendChangeMessage();
+	return true;
 }
 

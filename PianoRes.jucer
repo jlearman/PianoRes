@@ -50,10 +50,10 @@
         <MODULEPATH id="juce_gui_extra" path="C:/Softs/JUCE/modules"/>
       </MODULEPATHS>
     </VS2026>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraDefs="ZYNTHIAN=1">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="0" name="Debug"/>
-        <CONFIGURATION isDebug="1" name="Release"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../JUCE/modules"/>
