@@ -121,7 +121,7 @@ void PianoResAudioProcessor::prepareToPlay(double sampleRate,
 	adsrParams.attack = 0.05f; // Seconds -- make a parameter?
 	adsrParams.decay = 0.0f;
 	adsrParams.sustain = 1.0f;
-	adsrParams.release = apvts.getRawParameterValue("ReleaseTime")->load();
+	adsrParams.release = apvts.getRawParameterValue(juce::ParameterID("06_ReleaseTime", 1).getParamID())->load();
 	adsr.setParameters(adsrParams);
 }
 
@@ -172,11 +172,11 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 		buffer.clear(i, 0, buffer.getNumSamples());
 
 	// acquire parameters from AudioProcessorValueTreeState
-	auto inputGainValue = apvts.getRawParameterValue("InputGain");
-	auto dryGainValue = apvts.getRawParameterValue("DryGain");
-	auto wetGainValue = apvts.getRawParameterValue("WetGain");
-	auto outputGainValue = apvts.getRawParameterValue("OutputGain");
-	auto isBypassed = apvts.getRawParameterValue("Bypassed");
+	auto inputGainValue = apvts.getRawParameterValue(juce::ParameterID("02_InputGain", 1).getParamID());
+	auto dryGainValue = apvts.getRawParameterValue(juce::ParameterID("03_DryGain", 1).getParamID());
+	auto wetGainValue = apvts.getRawParameterValue(juce::ParameterID("04_WetGain", 1).getParamID());
+	auto outputGainValue = apvts.getRawParameterValue(juce::ParameterID("05_OutputGain", 1).getParamID());
+	auto isBypassed = apvts.getRawParameterValue(juce::ParameterID("01_Bypassed", 1).getParamID());
 	updateFilterParameters();
 
 	if (isBypassed->load() != 0.0) {
@@ -212,7 +212,7 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 		}
 		else if (message.isSustainPedalOff()) {
 			isSustainPedalDown = true;
-			auto releaseTime = apvts.getRawParameterValue("ReleaseTime")->load();
+			auto releaseTime = apvts.getRawParameterValue(juce::ParameterID("06_ReleaseTime", 1).getParamID())->load();
 			if (releaseTime != adsrParams.release) {
 				adsrParams.release = releaseTime;
 				adsr.setParameters(adsrParams);
@@ -323,10 +323,10 @@ void PianoResAudioProcessor::updateIRParameters() {
 void PianoResAudioProcessor::updateFilterParameters() {
 	const float sampleRate = static_cast<float>(this->getSampleRate());
 
-	auto lowShelfFreqValue = apvts.getRawParameterValue("LowShelfFreq");
-	auto lowShelfGainValue = apvts.getRawParameterValue("LowShelfGain");
-	auto highShelfFreqValue = apvts.getRawParameterValue("HighShelfFreq");
-	auto highShelfGainValue = apvts.getRawParameterValue("HighShelfGain");
+	auto lowShelfFreqValue = apvts.getRawParameterValue(juce::ParameterID("07_LowShelfFreq", 1).getParamID());
+	auto lowShelfGainValue = apvts.getRawParameterValue(juce::ParameterID("08_LowShelfGain", 1).getParamID());
+	auto highShelfFreqValue = apvts.getRawParameterValue(juce::ParameterID("09_HighShelfFreq", 1).getParamID());
+	auto highShelfGainValue = apvts.getRawParameterValue(juce::ParameterID("10_HighShelfGain", 1).getParamID());
 	*lowShelfFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowShelf(
 		sampleRate, lowShelfFreqValue->load(), 0.7f,
 		juce::Decibels::decibelsToGain(lowShelfGainValue->load()));
@@ -357,25 +357,25 @@ PianoResAudioProcessor::createParameters() {
 		juce::NormalisableRange<float>(-24.0f, 24.0f, 0.1f);
 
 	parameters.push_back(std::make_unique<juce::AudioParameterBool>(
-		"Bypassed", "Bypassed", false));
+		juce::ParameterID("01_Bypassed"), "Bypassed", false));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-		"InputGain", "Input Gain", gainRange, 0.0f));
+		juce::ParameterID("02_InputGain"), "Input Gain", gainRange, 0.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-		"DryGain", "Dry Gain", gainRange, 0.0f));
+		juce::ParameterID("03_DryGain"), "Dry Gain", gainRange, 0.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-		"WetGain", "Wet Gain", gainRange, -7.5f));
+		juce::ParameterID("04_WetGain"), "Wet Gain", gainRange, -7.5f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-		"OutputGain", "Output Gain", gainRange, 0.0f));
+		juce::ParameterID("05_OutputGain"), "Output Gain", gainRange, 0.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-		"ReleaseTime", "Decay", releaseTimeRange, 0.2f));
+		juce::ParameterID("06_ReleaseTime"), "Decay", releaseTimeRange, 0.2f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-		"LowShelfFreq", "LowFreq", lowShelfCutoffFreqRange, 20.0f));
+		juce::ParameterID("07_LowShelfFreq"), "LowFreq", lowShelfCutoffFreqRange, 20.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-		"LowShelfGain", "LowGain", lowShelfGainRange, 0.0f));
+		juce::ParameterID("08_LowShelfGain"), "LowGain", lowShelfGainRange, 0.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-		"HighShelfFreq", "HighFreq", highShelfCutoffFreqRange, 20000.0f));
+		juce::ParameterID("09_HighShelfFreq"), "HighFreq", highShelfCutoffFreqRange, 20000.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
-		"HighShelfGain", "HighGain", highShelfGainRange, 0.0f));
+		juce::ParameterID("10_HighShelfGain"), "HighGain", highShelfGainRange, 0.0f));
 	return { parameters.begin(), parameters.end() };
 }
 
