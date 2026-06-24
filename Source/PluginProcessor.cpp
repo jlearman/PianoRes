@@ -357,8 +357,6 @@ PianoResAudioProcessor::createParameters() {
 		juce::NormalisableRange<float>(-24.0f, 24.0f, 0.1f);
 
 	parameters.push_back(std::make_unique<juce::AudioParameterBool>(
-		"Reversed", "Reversed", false));
-	parameters.push_back(std::make_unique<juce::AudioParameterBool>(
 		"Bypassed", "Bypassed", false));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>(
 		"InputGain", "Input Gain", gainRange, 0.0f));
