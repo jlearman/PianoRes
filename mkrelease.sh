@@ -33,6 +33,13 @@ fi
 ZIP=PianoRes-$VERSION-$ARCH.zip
 
 set -ex
+
+if $ZYN ; then
+    # add priories to Juce-produced lv2 ttl file
+    ./fixttl.sh Artifacts/PianoRes.lv2/dsp.ttl > tmp
+    mv tmp Artifacts/PianoRes.lv2/dsp.ttl
+fi
+
 mkdir -p Artifacts
 rm -f Artifacts/$ZIP
 zip -r Artifacts/$ZIP ImpulseFiles
