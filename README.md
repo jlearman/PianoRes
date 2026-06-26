@@ -12,13 +12,16 @@ formats, including LV2, VST, VST3, and AU, on various platforms.
 It is currently available for Windows 64 bit (VST3) and Zynthian
 (Debian Bookworm on ARM, as an LV2 plugin.)
 
-## Installation
+## INSTALLATION
 
 Get the plugin, example IR files, and README by clicking the Release
 link at the right of the github Code page.  These are in a zip file.
 Follow the instructions in the README file.
 
-## Usage
+## USAGE
+
+Note: due to Issue #4, use 48KHz sample rate, unless using your own
+IR file.
 
 Plug PianoRes to process the audio output your piano sample player
 (sfizz, Sforzando, etc.) Unfortunately, neither sfizz nor Sforzando
@@ -93,7 +96,7 @@ not possible the normal way.  Copy the desired IR file to
 `/zynthian/zynthian-my-data/files/IRs/PianoResIR.flac`
 All instances of PianoRes will use this IR file.
 
-## Controls
+## CONTROLS
 
 The plugin has a file chooser to select the impulse response (IR) file,
 which is made from summing all the notes of a piano, ideally at low velocity.
@@ -114,6 +117,25 @@ The plugin has a release time control, which adjusts how quickly the
 damper resonance fades out as the sustain pedal is released.
 
 [NYI] Half-pedaling
+
+## CREATING YOUR OWN IR FILE
+
+While the supplied IR file should sound reasonable for most grand pianos,
+you can create a custom IR file for your favorite sampled piano in a DAW.
+
+Simply sample all the notes from A0 (lowest piano note) through the highest
+undamped note on your sampled piano and sum them all.  To make it a bit
+easier, you can make a number of MIDI tracks that plays a set of notes,
+and render the audio.  Adjust the volume so that the result is nearly
+normalized (that is, above say -3dBFS but not clipping.)
+
+Any file format supported by JUCE is allowed (WAV, AIFF, FLAC, Ogg Vorbis,
+MP3, and WMA.)  Any sample rate and bit depth is fine, but I suggest
+16 bits at 48 KHz.  Higher bit depths won't make audible differences,
+and 48 KHz is a commonly used sample rate.
+
+NOTE: See Issue #4 -- IR is not resampled to current audio rate.  Hopefull
+fixed soon.
 
 ## BUILDING
 
