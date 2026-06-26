@@ -17,6 +17,6 @@ v0.2.1:
 - changed impulse files to 48KHz
 
 Known issues:
-- Must be used at 48kHz (or whatever sample rate the IR file uses.)
+- Should be used at 48kHz (or whatever sample rate the IR file uses.)
   Otherwise audio effect is a garbled because the IR file is
-  not yet converted to the active sample rate.
+  not yet converted to the active sample rate.  Issue #4
