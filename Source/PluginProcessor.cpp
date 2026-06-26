@@ -18,9 +18,9 @@ PianoResAudioProcessor::PianoResAudioProcessor()
 	),
 	apvts(*this, nullptr, "Parameters", createParameters()),
 	lowShelfFilter(juce::dsp::IIR::Coefficients<float>::makeLowShelf(
-		44100, 20.0f, 1.0f, 0.7f)),
+		48000, 20.0f, 1.0f, 0.7f)),
 	highShelfFilter(juce::dsp::IIR::Coefficients<float>::makeHighShelf(
-		44100, 20000.0f, 1.0f, 0.7f))
+		48000, 20000.0f, 1.0f, 0.7f))
 {
 	apvts.state.setProperty("IrFilename", "", nullptr);
 	formatManager.registerBasicFormats();
