@@ -12,3 +12,11 @@ Maybe someday.  PianoRes already includes the
 short impulse file for Accurate Salamander Grand 6.2beta2 and uses it by
 default, without copying the impulse files that happen to be
 included in the zip file.
+
+v0.2.1:
+- changed impulse files to 48KHz
+
+Known issues:
+- Must be used at 48kHz (or whatever sample rate the IR file uses.)
+  Otherwise audio effect is a garbled because the IR file is
+  not yet converted to the active sample rate.
