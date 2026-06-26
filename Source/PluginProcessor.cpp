@@ -208,8 +208,8 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 			adsr.noteOn();
 			convolver.reset(); // FIXME: this can cause a click when the pedal is pressed, but without it,
 			// the release phase of the previous notes will still be convolved with the IR,
-			// which isn't how a piano works.  A better solution might be to have the 
-			// convolver only process the "active" part of the buffer, but how?
+			// which isn't how a piano works.  A better solution might be to use two convolvers,
+			// one for the old notes and one for the new notes, with independent ADSR for each.
 		}
 		else if (message.isSustainPedalOff()) {
 			isSustainPedalDown = true;
