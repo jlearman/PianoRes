@@ -27,11 +27,11 @@ PianoResAudioProcessor::PianoResAudioProcessor()
 
 #define DEBUG_ZYN_ON_WINDOWS 0
 #ifdef ZYNTHIAN
+	juce::String zynthianIRPath = "/zynthian/zynthian-my-data/files/IRs/PianoResIR.flac";
+
 	// Zynthian has no UI to load a user IR file, so look for one
 	if (DEBUG_ZYN_ON_WINDOWS) {
-		const juce::String zynthianIRPath = "C:/PianoResIR.flac";
-	} else {
-		const juce::String zynthianIRPath = "/zynthian/zynthian-my-data/files/IRs/PianoResIR.flac";
+		zynthianIRPath = juce::String("C:/PianoResIR.flac");
 	}
 	if (readIrFile(zynthianIRPath)) {
 		return;
