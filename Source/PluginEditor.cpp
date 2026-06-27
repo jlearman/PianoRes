@@ -34,52 +34,52 @@ PianoResAudioProcessorEditor::PianoResAudioProcessorEditor(PianoResAudioProcesso
 	addAndMakeVisible(bypassButton);
 	bypassButton.setButtonText("Bypass");
 	bypassButtonAttachment = std::make_unique<APVTS::ButtonAttachment>(
-		audioProcessor.apvts, "Bypassed", bypassButton);
+		audioProcessor.apvts, juce::ParameterID("01_Bypassed", 1).getParamID(), bypassButton);
 
 	createSlider(inputGainSlider, " dB");
 	createLabel(inputGainLabel, "Input", &inputGainSlider);
 	inputGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-		audioProcessor.apvts, "InputGain", inputGainSlider);
+		audioProcessor.apvts, juce::ParameterID("02_InputGain", 1).getParamID(), inputGainSlider);
 
 	createSlider(dryGainSlider, " dB");
 	createLabel(dryGainLabel, "Dry", &dryGainSlider);
 	dryGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-		audioProcessor.apvts, "DryGain", dryGainSlider);
+		audioProcessor.apvts, juce::ParameterID("03_DryGain", 1).getParamID(), dryGainSlider);
 
 	createSlider(wetGainSlider, " dB");
 	createLabel(wetGainLabel, "Wet", &wetGainSlider);
 	wetGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-		audioProcessor.apvts, "WetGain", wetGainSlider);
+		audioProcessor.apvts, juce::ParameterID("04_WetGain", 1).getParamID(), wetGainSlider);
 
 	createSlider(releaseTimeSlider, " sec");
 	createLabel(releaseTimeLabel, "Release", &releaseTimeSlider);
 	releaseTimeSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-		audioProcessor.apvts, "ReleaseTime", releaseTimeSlider);
+		audioProcessor.apvts, juce::ParameterID("06_ReleaseTime", 1).getParamID(), releaseTimeSlider);
 
 	createSlider(outputGainSlider, " dB");
 	createLabel(outputGainLabel, "Output", &outputGainSlider);
 	outputGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-		audioProcessor.apvts, "OutputGain", outputGainSlider);
+		audioProcessor.apvts, juce::ParameterID("05_OutputGain", 1).getParamID(), outputGainSlider);
 
 	createSlider(lowShelfFreqSlider, " Hz");
 	createLabel(lowShelfFreqLabel, "LowFreq", &lowShelfFreqSlider);
 	lowShelfFreqSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-		audioProcessor.apvts, "LowShelfFreq", lowShelfFreqSlider);
+		audioProcessor.apvts, juce::ParameterID("07_LowShelfFreq", 1).getParamID(), lowShelfFreqSlider);
 
 	createSlider(lowShelfGainSlider, " dB");
 	createLabel(lowShelfGainLabel, "LowGain", &lowShelfGainSlider);
 	lowShelfGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-		audioProcessor.apvts, "LowShelfGain", lowShelfGainSlider);
+		audioProcessor.apvts, juce::ParameterID("08_LowShelfGain", 1).getParamID(), lowShelfGainSlider);
 
 	createSlider(highShelfFreqSlider, " Hz");
 	createLabel(highShelfFreqLabel, "HighFreq", &highShelfFreqSlider);
 	highShelfFreqSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-		audioProcessor.apvts, "HighShelfFreq", highShelfFreqSlider);
+		audioProcessor.apvts, juce::ParameterID("09_HighShelfFreq", 1).getParamID(), highShelfFreqSlider);
 
 	createSlider(highShelfGainSlider, " dB");
 	createLabel(highShelfGainLabel, "HighGain", &highShelfGainSlider);
 	highShelfGainSliderAttachment = std::make_unique<APVTS::SliderAttachment>(
-		audioProcessor.apvts, "HighShelfGain", highShelfGainSlider);
+		audioProcessor.apvts, juce::ParameterID("10_HighShelfGain", 1).getParamID(), highShelfGainSlider);
 
 }
 
