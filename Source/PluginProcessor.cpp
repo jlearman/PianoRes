@@ -71,7 +71,11 @@ bool PianoResAudioProcessor::isMidiEffect() const {
 #endif
 }
 
-double PianoResAudioProcessor::getTailLengthSeconds() const { return 0.0; }
+double PianoResAudioProcessor::getTailLengthSeconds() const {
+	return std::max(
+		static_cast<float>(convolver.getCurrentIRSize()/getSampleRate()),
+		adsrParams.release);
+}
 
 int PianoResAudioProcessor::getNumPrograms() {
 	return 1; // NB: some hosts don't cope very well if you tell them there are 0
