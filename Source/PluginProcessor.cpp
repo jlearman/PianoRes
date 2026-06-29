@@ -305,6 +305,7 @@ void PianoResAudioProcessor::loadImpulseResponse(bool setupConvolution) {
 
 void PianoResAudioProcessor::updateImpulseResponse(
 	juce::AudioBuffer<float> irBuffer) {
+	return;
 	convolver.loadImpulseResponse(std::move(irBuffer), this->getSampleRate(),
 		juce::dsp::Convolution::Stereo::yes,
 		juce::dsp::Convolution::Trim::yes,
@@ -419,7 +420,7 @@ void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
 	// update text of IR file label
 	apvts.state.setProperty("IrFilename", "", nullptr);
 
-	// BinaryData automatically replaces non-alphanumeric characters (like '.') with underscores
+	// BinaryData automatically replaces non-alphanumeric filename characters (like '.') with underscores
 	const void* rawData = BinaryData::accuratesalamandergrand6_2impulseshort_flac;
 	size_t rawDataSize = BinaryData::accuratesalamandergrand6_2impulseshort_flacSize;
 
@@ -428,6 +429,7 @@ void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
 	// Wrap the raw binary pointer into an input stream
 	auto inputStream = std::make_unique<juce::MemoryInputStream>(rawData, rawDataSize, false);
 
+	// following code for display purposes only
 	// Create a reader from the stream
 	std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(std::move(inputStream)));
 
@@ -439,7 +441,12 @@ void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
 		static_cast<int>(reader->lengthInSamples));
 	reader->read(&getOriginalIR(), 0,
 		static_cast<int>(reader->lengthInSamples), 0, true, true);
-	loadImpulseResponse(setupConvolution);
+
+	// load IR into convolution
+	auto stream = std::make_unique<juce::MemoryInputStream>(rawData, rawDataSize, false);
+	loadIrFromStream(std::move(stream), convolver);
+
+	// loadImpulseResponse(setupConvolution);
 	sendChangeMessage();
 }
 
