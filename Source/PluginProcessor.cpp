@@ -20,8 +20,7 @@ PianoResAudioProcessor::PianoResAudioProcessor()
 	lowShelfFilter(juce::dsp::IIR::Coefficients<float>::makeLowShelf(
 		48000, 20.0f, 1.0f, 0.7f)),
 	highShelfFilter(juce::dsp::IIR::Coefficients<float>::makeHighShelf(
-		48000, 20000.0f, 1.0f, 0.7f))
-{
+		48000, 20000.0f, 1.0f, 0.7f)) {
 	apvts.state.setProperty("IrFilename", "", nullptr);
 	formatManager.registerBasicFormats();
 
@@ -73,7 +72,7 @@ bool PianoResAudioProcessor::isMidiEffect() const {
 
 double PianoResAudioProcessor::getTailLengthSeconds() const {
 	return std::max(
-		static_cast<float>(convolver.getCurrentIRSize()/getSampleRate()),
+		static_cast<float>(convolver.getCurrentIRSize() / getSampleRate()),
 		adsrParams.release);
 }
 
@@ -92,7 +91,8 @@ const juce::String PianoResAudioProcessor::getProgramName(int /*oindex*/) {
 }
 
 void PianoResAudioProcessor::changeProgramName(int /*index*/,
-	const juce::String&/*newName*/) {}
+	const juce::String&/*newName*/) {
+}
 
 //==============================================================================
 void PianoResAudioProcessor::prepareToPlay(double sampleRate,
@@ -213,8 +213,7 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 			// the release phase of the previous notes will still be convolved with the IR,
 			// which isn't how a piano works.  A better solution might be to use two convolvers,
 			// one for the old notes and one for the new notes, with independent ADSR for each.
-		}
-		else if (message.isSustainPedalOff()) {
+		} else if (message.isSustainPedalOff()) {
 			isSustainPedalDown = true;
 			auto releaseTime = apvts.getRawParameterValue(juce::ParameterID("06_ReleaseTime", 1).getParamID())->load();
 			if (releaseTime != adsrParams.release) {
@@ -239,8 +238,7 @@ void PianoResAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 	auto dryBlock = juce::dsp::AudioBlock<float>(dryBufferCopy);
 	auto dryContext = juce::dsp::ProcessContextReplacing<float>(dryBlock);
 	dryGainer.process(dryContext);
-	for (int channel = 0; channel < totalNumInputChannels; ++channel)
-	{
+	for (int channel = 0; channel < totalNumInputChannels; ++channel) {
 		buffer.addFrom(channel, 0, dryBufferCopy, channel, 0, buffer.getNumSamples());
 	}
 	outputGainer.process(context);
@@ -374,29 +372,28 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() {
 // #include <juce_audio_formats/juce_audio_formats.h>
 // #include <juce_dsp/juce_dsp.h>
 
-void loadIrFromStream(std::unique_ptr<juce::InputStream> stream, juce::dsp::Convolution& convolution)
-{
-	// 1. Register basic audio formats (WAV, AIFF, etc.)
+void loadIrFromStream(std::unique_ptr<juce::InputStream> stream, juce::dsp::Convolution& convolution) {
+	// Register basic audio formats (WAV, AIFF, etc.)
 	juce::AudioFormatManager formatManager;
 	formatManager.registerBasicFormats();
 
-	// 2. Create a reader for the stream
+	// Create a reader for the stream
 	std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(std::move(stream)));
-
-	if (reader != nullptr)
-	{
-		// 3. Create a buffer and read the audio data
-		juce::AudioBuffer<float> buffer(reader->numChannels, static_cast<int>(reader->lengthInSamples));
-		reader->read(&buffer, 0, static_cast<int>(reader->lengthInSamples), 0, true, true);
-
-		// 4. Load the buffer into the convolution module
-		// (The buffer is moved to prevent memory allocation on the audio thread)
-		convolution.loadImpulseResponse(std::move(buffer),
-			reader->sampleRate,
-			juce::dsp::Convolution::Stereo::yes, // or no
-			juce::dsp::Convolution::Trim::yes,
-			juce::dsp::Convolution::Normalise::yes);
+	if (reader == nullptr) {
+		return;
 	}
+
+	// Create a buffer and read the audio data
+	juce::AudioBuffer<float> buffer(reader->numChannels, static_cast<int>(reader->lengthInSamples));
+	reader->read(&buffer, 0, static_cast<int>(reader->lengthInSamples), 0, true, true);
+
+	// Load the buffer into the convolution module
+	// (The buffer is moved to prevent memory allocation on the audio thread)
+	convolution.loadImpulseResponse(std::move(buffer),
+		reader->sampleRate,
+		juce::dsp::Convolution::Stereo::yes, // or no
+		juce::dsp::Convolution::Trim::yes,
+		juce::dsp::Convolution::Normalise::yes);
 }
 
 void PianoResAudioProcessor::readMemoryIrFile() {
@@ -412,10 +409,8 @@ void PianoResAudioProcessor::readMemoryIrFile() {
 	// Wrap the raw binary pointer into an input stream
 	auto inputStream = std::make_unique<juce::MemoryInputStream>(rawData, rawDataSize, false);
 
-	// following code for display purposes only
 	// Create a reader from the stream
 	std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(std::move(inputStream)));
-
 	if (reader == nullptr) {
 		return;
 	}
@@ -431,7 +426,7 @@ void PianoResAudioProcessor::readMemoryIrFile() {
 bool PianoResAudioProcessor::readIrFile(juce::String irFilename) {
 	juce::File file(irFilename);
 
-	// for display only ---
+	// Create a reader from the file
 	std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
 	if (reader == nullptr) {
 		return false;
@@ -440,7 +435,7 @@ bool PianoResAudioProcessor::readIrFile(juce::String irFilename) {
 
 	// load IR into convolution
 	juce::File myFile(irFilename);
-	std::unique_ptr<juce::InputStream> stream (myFile.createInputStream());
+	std::unique_ptr<juce::InputStream> stream(myFile.createInputStream());
 	loadIrFromStream(std::move(stream), convolver);
 
 	sendChangeMessage();

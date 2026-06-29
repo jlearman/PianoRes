@@ -239,8 +239,7 @@ void PianoResAudioProcessorEditor::createLabel(juce::Label& label,
 	label.attachToComponent(slider, false);
 }
 
-void PianoResAudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* source)
-{
+void PianoResAudioProcessorEditor::changeListenerCallback(juce::ChangeBroadcaster* source) {
 	if (source == &audioProcessor) {
 		repaint(); // Safely called on the UI message thread
 	}
