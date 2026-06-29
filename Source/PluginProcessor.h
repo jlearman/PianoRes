@@ -58,7 +58,6 @@ public:
 	juce::AudioBuffer<float>& getOriginalIR();
 
 	void loadImpulseResponse(bool setupConvolution);
-	void updateImpulseResponse(juce::AudioBuffer<float> irBuffer);
 	void openMemoryIrFile(bool setupConvolution);
 	bool readIrFile(juce::String irFilename);
 

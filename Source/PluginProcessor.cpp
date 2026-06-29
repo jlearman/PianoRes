@@ -115,7 +115,6 @@ void PianoResAudioProcessor::prepareToPlay(double sampleRate,
 	outputGainer.reset();
 	convolver.prepare(spec);
 	convolver.reset();
-	updateImpulseResponse(originalIRBuffer);
 
 	lowShelfFilter.prepare(spec);
 	lowShelfFilter.reset();
@@ -292,24 +291,11 @@ juce::AudioBuffer<float>& PianoResAudioProcessor::getOriginalIR() {
 	return originalIRBuffer;
 }
 
-void PianoResAudioProcessor::loadImpulseResponse(bool setupConvolution) {
+void PianoResAudioProcessor::loadImpulseResponse(bool /*setupConvolution*/) {
 	// normalized IR signal
 	float globalMaxMagnitude =
 		originalIRBuffer.getMagnitude(0, originalIRBuffer.getNumSamples());
 	originalIRBuffer.applyGain(1.0f / (globalMaxMagnitude + 0.01f));
-
-	if (setupConvolution) {
-		updateImpulseResponse(originalIRBuffer);
-	}
-}
-
-void PianoResAudioProcessor::updateImpulseResponse(
-	juce::AudioBuffer<float> irBuffer) {
-	return;
-	convolver.loadImpulseResponse(std::move(irBuffer), this->getSampleRate(),
-		juce::dsp::Convolution::Stereo::yes,
-		juce::dsp::Convolution::Trim::yes,
-		juce::dsp::Convolution::Normalise::yes);
 }
 
 // TODO: remove this since there aren't any more IR parameters?
@@ -317,8 +303,6 @@ void PianoResAudioProcessor::updateIRParameters() {
 	if (originalIRBuffer.getNumSamples() < 1) {
 		return;
 	}
-
-	updateImpulseResponse(originalIRBuffer);
 }
 
 
