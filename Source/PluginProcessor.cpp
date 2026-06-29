@@ -37,7 +37,7 @@ PianoResAudioProcessor::PianoResAudioProcessor()
 		return;
 	}
 #endif
-	openMemoryIrFile(false);
+	readMemoryIrFile();
 }
 
 PianoResAudioProcessor::~PianoResAudioProcessor() {}
@@ -272,7 +272,7 @@ void PianoResAudioProcessor::setStateInformation(const void* data, int sizeInByt
 	}
 	juce::String irFilename = apvts.state.getProperty("IrFilename", "").toString();
 	if (irFilename.isEmpty()) {
-		openMemoryIrFile(true);
+		readMemoryIrFile();
 	} else {
 		readIrFile(irFilename);
 	}
@@ -399,7 +399,7 @@ void loadIrFromStream(std::unique_ptr<juce::InputStream> stream, juce::dsp::Conv
 	}
 }
 
-void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
+void PianoResAudioProcessor::readMemoryIrFile() {
 	// update text of IR file label
 	apvts.state.setProperty("IrFilename", "", nullptr);
 
