@@ -54,10 +54,7 @@ public:
 	void getStateInformation(juce::MemoryBlock& destData) override;
 	void setStateInformation(const void* data, int sizeInBytes) override;
 
-	void setIRBufferSize(int newNumChannels, int newNumSamples,
-		bool keepExistingContent = false,
-		bool clearExtraSpace = false,
-		bool avoidReallocating = false);
+	// IR buffer for display purposes
 	juce::AudioBuffer<float>& getOriginalIR();
 
 	void loadImpulseResponse(bool setupConvolution);
@@ -73,8 +70,9 @@ public:
 	juce::AudioFormatManager formatManager;
 
 private:
-	// std::unique_ptr<juce::InputStream> irInputStream;
+	// IR buffer, for display purposes only
 	juce::AudioBuffer<float> originalIRBuffer;
+	void setDisplayIrBuffer(std::unique_ptr<juce::AudioFormatReader> reader);
 
 	// Use an ADSR to control sustain release
 	juce::ADSR adsr;

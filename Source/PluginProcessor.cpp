@@ -279,13 +279,13 @@ void PianoResAudioProcessor::setStateInformation(const void* data, int sizeInByt
 	}
 }
 
-void PianoResAudioProcessor::setIRBufferSize(int newNumChannels,
-	int newNumSamples,
-	bool keepExistingContent,
-	bool clearExtraSpace,
-	bool avoidReallocating) {
-	originalIRBuffer.setSize(newNumChannels, newNumSamples, keepExistingContent,
-		clearExtraSpace, avoidReallocating);
+void PianoResAudioProcessor::setDisplayIrBuffer(std::unique_ptr<juce::AudioFormatReader> reader) {
+	if (reader == nullptr) {
+		return;
+	}
+	originalIRBuffer.setSize(static_cast<int>(reader->numChannels), static_cast<int>(reader->lengthInSamples), false, false, false);
+	reader->read(&getOriginalIR(), 0,
+		static_cast<int>(reader->lengthInSamples), 0, true, true);
 }
 
 juce::AudioBuffer<float>& PianoResAudioProcessor::getOriginalIR() {
@@ -436,11 +436,7 @@ void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
 	if (reader == nullptr) {
 		return;
 	}
-	setIRBufferSize(
-		static_cast<int>(reader->numChannels),
-		static_cast<int>(reader->lengthInSamples));
-	reader->read(&getOriginalIR(), 0,
-		static_cast<int>(reader->lengthInSamples), 0, true, true);
+	setDisplayIrBuffer(std::move(reader));
 
 	// load IR into convolution
 	auto stream = std::make_unique<juce::MemoryInputStream>(rawData, rawDataSize, false);
@@ -458,15 +454,7 @@ bool PianoResAudioProcessor::readIrFile(juce::String irFilename) {
 	if (reader == nullptr) {
 		return false;
 	}
-	setIRBufferSize(
-		static_cast<int>(reader->numChannels),
-		static_cast<int>(reader->lengthInSamples));
-	reader->read(&getOriginalIR(), 0,
-		static_cast<int>(reader->lengthInSamples), 0, true, true);
-	// normalized IR signal
-	float globalMaxMagnitude =
-		originalIRBuffer.getMagnitude(0, originalIRBuffer.getNumSamples());
-	originalIRBuffer.applyGain(1.0f / (globalMaxMagnitude + 0.01f));
+	setDisplayIrBuffer(std::move(reader));
 
 	// load IR into convolution
 	juce::File myFile(irFilename);
