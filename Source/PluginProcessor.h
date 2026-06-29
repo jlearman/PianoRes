@@ -59,7 +59,6 @@ public:
 		bool clearExtraSpace = false,
 		bool avoidReallocating = false);
 	juce::AudioBuffer<float>& getOriginalIR();
-	juce::AudioBuffer<float>& getModifiedIR();
 
 	void loadImpulseResponse(bool setupConvolution);
 	void updateImpulseResponse(juce::AudioBuffer<float> irBuffer);
@@ -76,7 +75,6 @@ public:
 private:
 	// std::unique_ptr<juce::InputStream> irInputStream;
 	juce::AudioBuffer<float> originalIRBuffer;
-	juce::AudioBuffer<float> modifiedIRBuffer;
 
 	// Use an ADSR to control sustain release
 	juce::ADSR adsr;

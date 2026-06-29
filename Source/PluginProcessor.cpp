@@ -292,10 +292,6 @@ juce::AudioBuffer<float>& PianoResAudioProcessor::getOriginalIR() {
 	return originalIRBuffer;
 }
 
-juce::AudioBuffer<float>& PianoResAudioProcessor::getModifiedIR() {
-	return modifiedIRBuffer;
-}
-
 void PianoResAudioProcessor::loadImpulseResponse(bool setupConvolution) {
 	// normalized IR signal
 	float globalMaxMagnitude =
