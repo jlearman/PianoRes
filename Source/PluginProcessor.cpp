@@ -386,6 +386,35 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() {
 	return new PianoResAudioProcessor();
 }
 
+
+// #include <juce_audio_formats/juce_audio_formats.h>
+// #include <juce_dsp/juce_dsp.h>
+
+void loadIrFromStream(std::unique_ptr<juce::InputStream> stream, juce::dsp::Convolution& convolution)
+{
+	// 1. Register basic audio formats (WAV, AIFF, etc.)
+	juce::AudioFormatManager formatManager;
+	formatManager.registerBasicFormats();
+
+	// 2. Create a reader for the stream
+	std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(std::move(stream)));
+
+	if (reader != nullptr)
+	{
+		// 3. Create a buffer and read the audio data
+		juce::AudioBuffer<float> buffer(reader->numChannels, static_cast<int>(reader->lengthInSamples));
+		reader->read(&buffer, 0, static_cast<int>(reader->lengthInSamples), 0, true, true);
+
+		// 4. Load the buffer into the convolution module
+		// (The buffer is moved to prevent memory allocation on the audio thread)
+		convolution.loadImpulseResponse(std::move(buffer),
+			reader->sampleRate,
+			juce::dsp::Convolution::Stereo::yes, // or no
+			juce::dsp::Convolution::Trim::yes,
+			juce::dsp::Convolution::Normalise::yes);
+	}
+}
+
 void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
 	// update text of IR file label
 	apvts.state.setProperty("IrFilename", "", nullptr);
@@ -417,6 +446,7 @@ void PianoResAudioProcessor::openMemoryIrFile(bool setupConvolution) {
 bool PianoResAudioProcessor::readIrFile(juce::String irFilename) {
 	juce::File file(irFilename);
 
+	// for display only ---
 	std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
 	if (reader == nullptr) {
 		return false;
@@ -426,8 +456,17 @@ bool PianoResAudioProcessor::readIrFile(juce::String irFilename) {
 		static_cast<int>(reader->lengthInSamples));
 	reader->read(&getOriginalIR(), 0,
 		static_cast<int>(reader->lengthInSamples), 0, true, true);
-	loadImpulseResponse(true);
+	// normalized IR signal
+	float globalMaxMagnitude =
+		originalIRBuffer.getMagnitude(0, originalIRBuffer.getNumSamples());
+	originalIRBuffer.applyGain(1.0f / (globalMaxMagnitude + 0.01f));
+
+	// load IR into convolution
+	juce::File myFile(irFilename);
+	std::unique_ptr<juce::InputStream> stream (myFile.createInputStream());
+	loadIrFromStream(std::move(stream), convolver);
+
+	// loadImpulseResponse(true);
 	sendChangeMessage();
 	return true;
 }
-

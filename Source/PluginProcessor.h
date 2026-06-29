@@ -74,6 +74,7 @@ public:
 	juce::AudioFormatManager formatManager;
 
 private:
+	// std::unique_ptr<juce::InputStream> irInputStream;
 	juce::AudioBuffer<float> originalIRBuffer;
 	juce::AudioBuffer<float> modifiedIRBuffer;
 
