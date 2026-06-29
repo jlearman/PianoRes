@@ -12,13 +12,11 @@ if [[ $1 == "-z" ]] ; then
     shift
 fi
 
-if [ $# -lt 1 ] ; then
-    echo "expecting version number, with v prefix"
-    exit 1
-fi
-
-
-VERSION=$1
+VERSION=$(IFS=$' \r\n' /mnt/c/Softs/JUCE/Projucer.exe --get-version PianoRes.jucer)
+# strip CRLF from Win version of Projucer
+VERSION=$(echo $VERSION | sed -e "s:\r::" -e "s:\n::" )
+VERSION="v$VERSION"
+read -p "Version = '$VERSION'. Hit ENTER to continue" ANSWER
 
 if $ZYN ; then
     FORMAT=lv2
