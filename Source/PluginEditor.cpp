@@ -122,7 +122,7 @@ void PianoResAudioProcessorEditor::paint(juce::Graphics& g) {
 		waveformPath.clear();
 		waveformPath.startNewSubPath(15, waveformHeight + 60);
 
-		auto buffer = audioProcessor.getOriginalIR();
+		auto buffer = audioProcessor.getDisplayIrBuffer();
 		const float waveformResolution = 1024.0f;
 		const int ratio =
 			static_cast<int>(buffer.getNumSamples() / waveformResolution);

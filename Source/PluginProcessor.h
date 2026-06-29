@@ -55,7 +55,7 @@ public:
 	void setStateInformation(const void* data, int sizeInBytes) override;
 
 	// IR buffer for display purposes
-	juce::AudioBuffer<float>& getOriginalIR();
+	juce::AudioBuffer<float>& getDisplayIrBuffer();
 
 	void readMemoryIrFile();
 	bool readIrFile(juce::String irFilename);
@@ -69,7 +69,7 @@ public:
 
 private:
 	// IR buffer, for display purposes only
-	juce::AudioBuffer<float> originalIRBuffer;
+	juce::AudioBuffer<float> displayIrBuffer;
 	void setDisplayIrBuffer(std::unique_ptr<juce::AudioFormatReader> reader);
 
 	// Use an ADSR to control sustain release

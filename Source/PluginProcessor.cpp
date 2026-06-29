@@ -282,24 +282,24 @@ void PianoResAudioProcessor::setDisplayIrBuffer(std::unique_ptr<juce::AudioForma
 	if (reader == nullptr) {
 		return;
 	}
-	originalIRBuffer.setSize(static_cast<int>(reader->numChannels), static_cast<int>(reader->lengthInSamples), false, false, false);
+	displayIrBuffer.setSize(static_cast<int>(reader->numChannels), static_cast<int>(reader->lengthInSamples), false, false, false);
 
 	// normalize the display IR buffer
 	float maxMagnitude =
-		originalIRBuffer.getMagnitude(0, originalIRBuffer.getNumSamples());
-	originalIRBuffer.applyGain(1.0f / (maxMagnitude + 0.01f));
+		displayIrBuffer.getMagnitude(0, displayIrBuffer.getNumSamples());
+	displayIrBuffer.applyGain(1.0f / (maxMagnitude + 0.01f));
 
-	reader->read(&getOriginalIR(), 0,
+	reader->read(&getDisplayIrBuffer(), 0,
 		static_cast<int>(reader->lengthInSamples), 0, true, true);
 }
 
-juce::AudioBuffer<float>& PianoResAudioProcessor::getOriginalIR() {
-	return originalIRBuffer;
+juce::AudioBuffer<float>& PianoResAudioProcessor::getDisplayIrBuffer() {
+	return displayIrBuffer;
 }
 
 // TODO: remove this since there aren't any more IR parameters?
 void PianoResAudioProcessor::updateIRParameters() {
-	if (originalIRBuffer.getNumSamples() < 1) {
+	if (displayIrBuffer.getNumSamples() < 1) {
 		return;
 	}
 }
